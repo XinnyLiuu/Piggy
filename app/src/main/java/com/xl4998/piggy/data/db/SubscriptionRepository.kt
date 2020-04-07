@@ -1,17 +1,16 @@
 package com.xl4998.piggy.data.db
 
-import com.xl4998.piggy.data.db.dao.SubscriptionDao
+import android.app.Application
 import com.xl4998.piggy.data.db.entities.Subscription
-import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * Handles all subscription related data operations
  */
-@Singleton
-class SubscriptionRepository @Inject constructor(
-    private val subscriptionDao: SubscriptionDao
-) {
+class SubscriptionRepository(application: Application) {
+    // Prepare database instance
+    private val db: PiggyDatabase = PiggyDatabase.getInstance(application)
+    private val subscriptionDao = db.subDao()
+
     /**
      * Returns all subscriptions the user has added
      */
@@ -25,4 +24,6 @@ class SubscriptionRepository @Inject constructor(
     fun getSubByName(name: String): Subscription {
         return subscriptionDao.getSubByName(name)
     }
+
+    // TODO: other db related queries
 }

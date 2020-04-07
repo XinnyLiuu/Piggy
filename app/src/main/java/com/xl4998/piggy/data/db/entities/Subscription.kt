@@ -3,7 +3,6 @@ package com.xl4998.piggy.data.db.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.Date
 
 /**
  * Represents a subscription entered by the user
@@ -13,6 +12,6 @@ data class Subscription(
     @PrimaryKey
     @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "cost") var cost: Double,
-    @ColumnInfo(name = "date_added") var dateAdded: Date,
+    @ColumnInfo(name = "date_added") var dateAdded: String,
     @ColumnInfo(name = "interval") var interval: Int // Interval should be used to recur expenses
 )

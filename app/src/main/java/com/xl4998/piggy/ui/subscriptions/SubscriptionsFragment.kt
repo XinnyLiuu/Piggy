@@ -1,21 +1,32 @@
 package com.xl4998.piggy.ui.subscriptions
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.xl4998.piggy.R
+import com.xl4998.piggy.data.db.SubscriptionRepository
 
 class SubscriptionsFragment : Fragment() {
+    private var viewModel: SubscriptionsViewModel? = null
+    private var subscriptionRepository: SubscriptionRepository? = null
 
-    companion object {
-        fun newInstance() = SubscriptionsFragment()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Prepare repository
+        subscriptionRepository = SubscriptionRepository(activity!!.application)
+
+        // Link ViewModel
+        viewModel = SubscriptionsViewModel(subscriptionRepository!!)
+
+        // Setup observers
+        viewModel!!.liveAllSubs.observe(this, Observer {
+            // TODO:
+        })
     }
-
-    private lateinit var viewModel: SubscriptionsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,11 +34,4 @@ class SubscriptionsFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_subscriptions, container, false)
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SubscriptionsViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
 }

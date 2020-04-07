@@ -1,20 +1,15 @@
 package com.xl4998.piggy.ui.subscriptions
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.xl4998.piggy.data.db.SubscriptionRepository
 import com.xl4998.piggy.data.db.entities.Subscription
 import kotlinx.coroutines.*
-import javax.inject.Inject
 
 /**
  * All UI related data for the corresponding view
  */
-class SubscriptionsViewModel @Inject constructor(
-    private val subscriptionRepository: SubscriptionRepository
-) : ViewModel() {
+class SubscriptionsViewModel (private val subscriptionRepository: SubscriptionRepository) : ViewModel() {
 
     // Data
     private var allSubs: MutableList<Subscription> = mutableListOf() // Stores all subscriptions until it is ready to be notified by the Observer
@@ -66,4 +61,6 @@ class SubscriptionsViewModel @Inject constructor(
 
         return sub
     }
+
+    // TODO: other db related queries
 }
