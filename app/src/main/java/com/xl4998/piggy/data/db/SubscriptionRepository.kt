@@ -7,6 +7,7 @@ import com.xl4998.piggy.data.db.entities.Subscription
  * Handles all subscription related data op erations
  */
 class SubscriptionRepository(application: Application) {
+
     // Prepare database instance
     private val db: PiggyDatabase = PiggyDatabase.getInstance(application)
     private val subscriptionDao = db.subDao()

@@ -14,26 +14,20 @@ import kotlinx.android.synthetic.main.fragment_subscriptions.*
 
 class SubscriptionsFragment : Fragment() {
 
-    // ViewModel + Data
-    private lateinit var viewModel: SubscriptionsViewModel
-    private lateinit var subscriptionRepository: SubscriptionRepository
-
     // RecyclerView
     private lateinit var rvAdapter: SubscriptionListAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var layoutManager: RecyclerView.LayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Repository
-        subscriptionRepository = SubscriptionRepository(activity!!.application)
+        val subscriptionRepository = SubscriptionRepository(activity!!.application)
 
         // ViewModel
-        viewModel = SubscriptionsViewModel(subscriptionRepository)
+        val viewModel = SubscriptionsViewModel(subscriptionRepository)
 
         // RecyclerView adapter
-        rvAdapter = SubscriptionListAdapter(mutableListOf(), context!!)
+        rvAdapter = SubscriptionListAdapter(mutableListOf())
 
         // Setup observers
         viewModel.liveAllSubs.observe(this, Observer { subs ->
@@ -48,9 +42,9 @@ class SubscriptionsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_subscriptions, container, false)
 
         // Prepare RecyclerView
-        recyclerView = view.findViewById(R.id.sub_list)
+        val recyclerView: RecyclerView = view.findViewById(R.id.sub_list)
         recyclerView.setHasFixedSize(true)
-        layoutManager = LinearLayoutManager(context)
+        val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = rvAdapter
 

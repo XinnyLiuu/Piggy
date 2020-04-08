@@ -19,7 +19,7 @@ import java.util.*
  */
 class SubscriptionCreateDialogFragment : DialogFragment() {
 
-    private var toolbar: Toolbar? = null
+    private lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +45,10 @@ class SubscriptionCreateDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Setup listeners for the toolbar
-        toolbar!!.setNavigationOnClickListener { dismiss() }
-        toolbar!!.title = "Add a Subscription"
-        toolbar!!.inflateMenu(R.menu.fragment_subscription_create_menu)
-        toolbar!!.setOnMenuItemClickListener {
+        toolbar.setNavigationOnClickListener { dismiss() }
+        toolbar.title = "Add a Subscription"
+        toolbar.inflateMenu(R.menu.fragment_subscription_create_menu)
+        toolbar.setOnMenuItemClickListener {
             dismiss()
             true
         }

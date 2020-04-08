@@ -14,8 +14,7 @@ import com.xl4998.piggy.data.db.entities.Subscription
  * RecyclerView adapter for items in the SubscriptionsFragment's RecyclerView
  */
 class SubscriptionListAdapter (
-    private var subList: MutableList<Subscription>,
-    private val context: Context
+    private var subList: MutableList<Subscription>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // Reference to each item to be generated in RecyclerView

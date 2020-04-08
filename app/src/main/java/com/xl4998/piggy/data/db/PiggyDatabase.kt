@@ -13,6 +13,7 @@ import com.xl4998.piggy.data.db.entities.Subscription
 @Database(entities = [Subscription::class], version = 1, exportSchema = false)
 abstract class PiggyDatabase: RoomDatabase() {
 
+    // DAO
     abstract fun subDao(): SubscriptionDao
 
     // Singleton
