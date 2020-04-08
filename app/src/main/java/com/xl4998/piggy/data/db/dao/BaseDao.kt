@@ -2,7 +2,6 @@ package com.xl4998.piggy.data.db.dao
 
 import androidx.room.Delete
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Update
 
 /**
@@ -13,7 +12,7 @@ interface BaseDao<T> {
     fun insert(t: T)
 
     @Update
-    fun update(t: T)
+    fun update(t: T): Int
 
     @Delete
     fun delete(t: T): Int

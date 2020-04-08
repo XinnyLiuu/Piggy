@@ -24,21 +24,15 @@ import java.util.*
  *
  * Code taken from https://medium.com/alexander-schaefer/implementing-the-new-material-design-full-screen-dialog-for-android-e9dcc712cb38
  */
-class SubscriptionCreateDialogFragment : DialogFragment() {
+class SubscriptionCreateDialogFragment(
+    private val viewModel: SubscriptionsViewModel
+) : DialogFragment() {
 
     private lateinit var toolbar: Toolbar
-
-    private lateinit var viewModel: SubscriptionsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.AppTheme_FullScreenDialog)
-
-        // Repository
-        val subscriptionRepository = SubscriptionRepository(activity!!.application)
-
-        // ViewModel
-        viewModel = SubscriptionsViewModel(subscriptionRepository)
     }
 
     @SuppressLint("SetTextI18n")
@@ -83,15 +77,6 @@ class SubscriptionCreateDialogFragment : DialogFragment() {
 
                         // Call parent fragment's ViewModel
                         viewModel.addNewSub(sub)
-
-//                        // Refresh parent fragment
-//                        val target = parentFragmentManager.fragments[0]
-////                        Log.v("All Fragments", fm.toString())
-//                        parentFragmentManager
-//                            .beginTransaction()
-//                            .detach(target)
-//                            .attach(target)
-//                            .commit()
 
                         dismiss()
                     }

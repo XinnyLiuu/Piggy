@@ -19,7 +19,7 @@ import com.xl4998.piggy.data.db.entities.Subscription
  * RecyclerView adapter for items in the SubscriptionListFragment's RecyclerView
  */
 class SubscriptionListAdapter (
-    private var viewModel: SubscriptionsViewModel,
+    private val viewModel: SubscriptionsViewModel,
     private var subList: MutableList<Subscription>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

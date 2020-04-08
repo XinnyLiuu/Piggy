@@ -62,7 +62,7 @@ class SubscriptionListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Prepare dialog fragment
-        val createSubDialog = SubscriptionCreateDialogFragment()
+        val createSubDialog = SubscriptionCreateDialogFragment(viewModel)
 
         // Setup listeners for button
         add_sub_button.setOnClickListener {
