@@ -11,7 +11,7 @@ import com.xl4998.piggy.data.db.entities.Subscription
  * Room abstracted layer for interaction with SQLite
  */
 @Database(entities = [Subscription::class], version = 1, exportSchema = false)
-abstract class PiggyDatabase: RoomDatabase() {
+abstract class PiggyDatabase : RoomDatabase() {
 
     // DAO
     abstract fun subDao(): SubscriptionDao
@@ -27,9 +27,11 @@ abstract class PiggyDatabase: RoomDatabase() {
         fun getInstance(context: Context): PiggyDatabase {
             if (INSTANCE == null) {
                 INSTANCE = Room
-                    .databaseBuilder(context.applicationContext,
+                    .databaseBuilder(
+                        context.applicationContext,
                         PiggyDatabase::class.java,
-                        "piggy.db")
+                        "piggy.db"
+                    )
                     .fallbackToDestructiveMigration()
                     .build()
             }

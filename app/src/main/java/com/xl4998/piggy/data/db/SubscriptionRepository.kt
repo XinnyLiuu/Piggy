@@ -41,4 +41,17 @@ class SubscriptionRepository(application: Application) {
     fun removeSubscription(sub: Subscription): Int {
         return subscriptionDao.delete(sub)
     }
+
+    /**
+     * Update a subscription
+     */
+    fun updateSubscription(sub: Subscription, oldName: String): Int {
+        return subscriptionDao.updateByName(
+            sub.name,
+            oldName,
+            sub.cost,
+            sub.dateSubscribed,
+            sub.interval
+        )
+    }
 }

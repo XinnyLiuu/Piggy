@@ -14,14 +14,13 @@ import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.entities.Subscription
 import kotlinx.android.synthetic.main.fragment_subscription_create_dialog.*
 import java.util.*
-import kotlin.math.round
 
 /**
- * A full screen dialog that will assist in creating a new subscription
+ * A full screen dialog that will assist in updating an existing subscription
  *
  * Refer to https://medium.com/alexander-schaefer/implementing-the-new-material-design-full-screen-dialog-for-android-e9dcc712cb38
  */
-class SubscriptionCreateDialogFragment(
+class SubscriptionUpdateDialogFragment(
     private val viewModel: SubscriptionsViewModel
 ) : DialogFragment() {
 
@@ -38,7 +37,8 @@ class SubscriptionCreateDialogFragment(
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view: View = inflater.inflate(R.layout.fragment_subscription_create_dialog, container, false)
+        val view: View =
+            inflater.inflate(R.layout.fragment_subscription_update_dialog, container, false)
 
         // Get the toolbar
         toolbar = view.findViewById(R.id.toolbar)
@@ -50,15 +50,21 @@ class SubscriptionCreateDialogFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Grab text fields
+        // Fill text fields with subscription details
         val nameField = view.findViewById<TextView>(R.id.sub_name_field)
+        nameField.text = arguments!!.getString("name")
         val costField = view.findViewById<TextView>(R.id.sub_cost_field)
+        costField.text = arguments!!.getString("cost")
         val dateField = view.findViewById<TextView>(R.id.sub_date_field)
+        dateField.text = arguments!!.getString("date")
         val intervalField = view.findViewById<TextView>(R.id.sub_interval_field)
+        intervalField.text = arguments!!.getString("interval")
+
+        val oldName: String = arguments!!.getString("name")!!
 
         // Setup listeners for the toolbar
         toolbar.setNavigationOnClickListener { dismiss() }
-        toolbar.title = "Add a Subscription"
+        toolbar.title = "Edit Subscription"
         toolbar.inflateMenu(R.menu.fragment_subscription_create_menu)
         toolbar.setOnMenuItemClickListener { it ->
             when (it.itemId) {
@@ -70,18 +76,15 @@ class SubscriptionCreateDialogFragment(
                     val interval = intervalField.text.toString().trim()
 
                     if (name.isEmpty() || cost.isEmpty() || date.isEmpty() || interval.isEmpty()) {
-                        Toast.makeText(context, "Please complete all fields!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Please complete all fields!", Toast.LENGTH_SHORT)
+                            .show()
                     } else {
                         // Create subscription
-                        val sub = Subscription(
-                            name.capitalize(),
-                            (round(cost.toDouble() * 100) / 100),
-                            date,
-                            interval.toInt()
-                        )
+                        val sub =
+                            Subscription(name.capitalize(), cost.toDouble(), date, interval.toInt())
 
                         // Update subscription list view
-                        viewModel.addNewSub(sub)
+                        viewModel.updateSub(sub, oldName)
 
                         // Clear all texts
                         nameField.text = ""

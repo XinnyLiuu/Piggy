@@ -9,7 +9,8 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "subscriptions")
 data class Subscription(
-    @PrimaryKey @ColumnInfo(name = "name") var name: String,
+    @PrimaryKey
+    @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "cost") var cost: Double,
     @ColumnInfo(name = "date_subscribed") var dateSubscribed: String,
     @ColumnInfo(name = "interval") var interval: Int // Interval should be used to recur expenses

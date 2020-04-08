@@ -11,4 +11,9 @@
     <string name="sub_cost">Cost</string>
     <string name="sub_date">Date Subscribed</string>
     <string name="sub_interval">Interval</string>
+    <string name="subscription_cost">Subscription Cost</string>
+    <string name="subscription_name">Subscription Name</string>
+    <string name="subscription_due">Subscription Due</string>
+    <string name="remove">remove</string>
+    <string name="edit">edit</string>
 </resources>

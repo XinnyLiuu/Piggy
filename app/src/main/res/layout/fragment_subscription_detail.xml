@@ -22,7 +22,7 @@
                 android:id="@+id/sub_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Subscription Name"
+                android:text="@string/subscription_name"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Subscription Cost"
+                android:text="@string/subscription_cost"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary" />
 
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Subscription Due"
+                android:text="@string/subscription_due"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary" />
 
@@ -53,17 +53,17 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/sub_remove"
+                android:id="@+id/sub_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:text="remove"
+                android:text="@string/edit"
                 style="?attr/borderlessButtonStyle" />
 
             <Button
+                android:id="@+id/sub_remove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="btn2"
+                android:text="@string/remove"
                 style="?attr/borderlessButtonStyle" />
 
         </LinearLayout>

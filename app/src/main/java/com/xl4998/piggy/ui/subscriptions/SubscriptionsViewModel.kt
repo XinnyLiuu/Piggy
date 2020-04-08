@@ -5,33 +5,25 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xl4998.piggy.data.db.SubscriptionRepository
 import com.xl4998.piggy.data.db.entities.Subscription
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
- * All UI related data for the corresponding view
+ * All Subscriptions UI related data
  */
-class SubscriptionsViewModel (private val subscriptionRepository: SubscriptionRepository) : ViewModel() {
+class SubscriptionsViewModel(
+    private val subscriptionRepository: SubscriptionRepository
+) : ViewModel() {
 
     // Data
-    private var allSubs: MutableList<Subscription> = mutableListOf() // Stores all subscriptions until it is ready to be notified by the Observer
-    var liveAllSubs: MutableLiveData<MutableList<Subscription>> = MutableLiveData() // Actual object to notify
-
-//    // Refer to https://medium.com/androiddevelopers/easy-coroutines-in-android-viewmodelscope-25bffb605471
-//    private val viewModelJob = SupervisorJob()
-//    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    private var allSubs: MutableList<Subscription> = mutableListOf()
+    var liveAllSubs: MutableLiveData<MutableList<Subscription>> = MutableLiveData()
 
     init {
         // Grab all subscriptions for the user
         getAllSubs()
     }
-//
-//    /**
-//     * Cancels all coroutines when this ViewModel is cleared to prevent memory leaks
-//     */
-//    override fun onCleared() {
-//        super.onCleared()
-//        viewModelJob.cancel()
-//    }
 
     /**
      * Grabs all subscriptions
@@ -82,6 +74,20 @@ class SubscriptionsViewModel (private val subscriptionRepository: SubscriptionRe
             withContext(Dispatchers.IO) {
                 // Remove the subscription
                 subscriptionRepository.removeSubscription(sub)
+                allSubs = subscriptionRepository.getAllSubs().toMutableList()
+                liveAllSubs.postValue(allSubs)
+            }
+        }
+    }
+
+    /**
+     * Update a stored subscription
+     */
+    fun updateSub(sub: Subscription, oldName: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                // Update the subscription
+                subscriptionRepository.updateSubscription(sub, oldName)
                 allSubs = subscriptionRepository.getAllSubs().toMutableList()
                 liveAllSubs.postValue(allSubs)
             }
