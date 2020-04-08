@@ -17,7 +17,7 @@ import java.util.*
  *
  * Code taken from https://medium.com/alexander-schaefer/implementing-the-new-material-design-full-screen-dialog-for-android-e9dcc712cb38
  */
-class SubscriptionCreateFragment : DialogFragment() {
+class SubscriptionCreateDialogFragment : DialogFragment() {
 
     private var toolbar: Toolbar? = null
 

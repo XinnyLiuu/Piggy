@@ -6,26 +6,38 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.SubscriptionRepository
 import kotlinx.android.synthetic.main.fragment_subscriptions.*
 
 class SubscriptionsFragment : Fragment() {
-    private var viewModel: SubscriptionsViewModel? = null
-    private var subscriptionRepository: SubscriptionRepository? = null
+
+    // ViewModel + Data
+    private lateinit var viewModel: SubscriptionsViewModel
+    private lateinit var subscriptionRepository: SubscriptionRepository
+
+    // RecyclerView
+    private lateinit var rvAdapter: SubscriptionListAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var layoutManager: RecyclerView.LayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Prepare repository
+        // Repository
         subscriptionRepository = SubscriptionRepository(activity!!.application)
 
-        // Link ViewModel
-        viewModel = SubscriptionsViewModel(subscriptionRepository!!)
+        // ViewModel
+        viewModel = SubscriptionsViewModel(subscriptionRepository)
+
+        // RecyclerView adapter
+        rvAdapter = SubscriptionListAdapter(mutableListOf(), context!!)
 
         // Setup observers
-        viewModel!!.liveAllSubs.observe(this, Observer {
-            // TODO:
+        viewModel.liveAllSubs.observe(this, Observer { subs ->
+            rvAdapter.setSubs(subs)
         })
     }
 
@@ -33,14 +45,23 @@ class SubscriptionsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_subscriptions, container, false)
+        val view = inflater.inflate(R.layout.fragment_subscriptions, container, false)
+
+        // Prepare RecyclerView
+        recyclerView = view.findViewById(R.id.sub_list)
+        recyclerView.setHasFixedSize(true)
+        layoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = rvAdapter
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Prepare dialog fragment
-        val createSubDialog = SubscriptionCreateFragment()
+        val createSubDialog = SubscriptionCreateDialogFragment()
 
         // Setup listeners for button
         add_sub_button.setOnClickListener {
