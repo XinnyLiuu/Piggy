@@ -43,7 +43,7 @@ class SubscriptionsFragment : Fragment() {
         val createSubDialog = SubscriptionCreateFragment()
 
         // Setup listeners for button
-        open_dialog_button.setOnClickListener {
+        add_sub_button.setOnClickListener {
             createSubDialog.show(parentFragmentManager, "Create Sub Dialog")
         }
     }

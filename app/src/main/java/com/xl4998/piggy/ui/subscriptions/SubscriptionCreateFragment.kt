@@ -1,15 +1,16 @@
 package com.xl4998.piggy.ui.subscriptions
 
-import android.os.Build
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
-
 import com.xl4998.piggy.R
+import kotlinx.android.synthetic.main.fragment_subscription_create.*
+import java.util.*
 
 /**
  * A full screen dialog that will assist in creating a new subscription
@@ -22,9 +23,10 @@ class SubscriptionCreateFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.AppTheme_FullScreenDialog)
+        setStyle(STYLE_NORMAL, R.style.AppTheme_FullScreenDialog)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,7 +40,7 @@ class SubscriptionCreateFragment : DialogFragment() {
         return view
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -50,6 +52,28 @@ class SubscriptionCreateFragment : DialogFragment() {
             dismiss()
             true
         }
+
+        // Setup date picker dialog
+        sub_date_field.setOnClickListener {
+            val cal: Calendar = Calendar.getInstance()
+            val m = cal.get(Calendar.MONTH)
+            val d = cal.get(Calendar.DAY_OF_MONTH)
+            val y = cal.get(Calendar.YEAR)
+
+            val picker = DatePickerDialog(
+                activity!!,
+                DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                    sub_date_field.setText(String.format("%s/%s/%s", month + 1, dayOfMonth, year))
+                },
+                y, m, d
+            )
+
+            picker.show()
+        }
+
+        // TODO: https://stackoverflow.com/questions/14036674/how-to-limit-the-text-in-numbers-only-from-0-59-in-edit-text-in-android
+        // Setup pre-defined range for interval
+//        sub_interval_field.filters = [InputFilterMinMax()]
     }
 
     override fun onStart() {

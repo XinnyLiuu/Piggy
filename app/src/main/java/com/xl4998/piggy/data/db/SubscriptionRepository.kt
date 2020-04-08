@@ -4,7 +4,7 @@ import android.app.Application
 import com.xl4998.piggy.data.db.entities.Subscription
 
 /**
- * Handles all subscription related data operations
+ * Handles all subscription related data op erations
  */
 class SubscriptionRepository(application: Application) {
     // Prepare database instance
@@ -25,5 +25,10 @@ class SubscriptionRepository(application: Application) {
         return subscriptionDao.getSubByName(name)
     }
 
-    // TODO: other db related queries
+    /**
+     * Inserts a new subscription into the database
+     */
+    fun addSubscription(sub: Subscription) {
+        // TODO: Validation
+    }
 }
