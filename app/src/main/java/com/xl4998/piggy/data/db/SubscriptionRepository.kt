@@ -29,7 +29,7 @@ class SubscriptionRepository(application: Application) {
     /**
      * Inserts a new subscription into the database
      */
-    fun addSubscription(sub: Subscription) {
-        // TODO: Validation
+    fun addSubscription(sub: Subscription): Long {
+        return subscriptionDao.insert(sub)
     }
 }

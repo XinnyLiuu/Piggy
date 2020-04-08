@@ -1,11 +1,15 @@
 package com.xl4998.piggy.ui.subscriptions
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.xl4998.piggy.R
@@ -13,6 +17,9 @@ import com.xl4998.piggy.data.db.SubscriptionRepository
 import kotlinx.android.synthetic.main.fragment_subscriptions.*
 
 class SubscriptionsFragment : Fragment() {
+
+    // ViewModel
+    private lateinit var viewModel: SubscriptionsViewModel
 
     // RecyclerView
     private lateinit var rvAdapter: SubscriptionListAdapter
@@ -24,7 +31,7 @@ class SubscriptionsFragment : Fragment() {
         val subscriptionRepository = SubscriptionRepository(activity!!.application)
 
         // ViewModel
-        val viewModel = SubscriptionsViewModel(subscriptionRepository)
+        viewModel = SubscriptionsViewModel(subscriptionRepository)
 
         // RecyclerView adapter
         rvAdapter = SubscriptionListAdapter(mutableListOf())
@@ -59,6 +66,7 @@ class SubscriptionsFragment : Fragment() {
 
         // Setup listeners for button
         add_sub_button.setOnClickListener {
+//            createSubDialog.setTargetFragment(this, 1)
             createSubDialog.show(parentFragmentManager, "Create Sub Dialog")
         }
     }

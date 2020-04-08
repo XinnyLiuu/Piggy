@@ -1,14 +1,21 @@
 package com.xl4998.piggy.ui.subscriptions
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.xl4998.piggy.R
+import com.xl4998.piggy.data.db.SubscriptionRepository
+import com.xl4998.piggy.data.db.entities.Subscription
 import kotlinx.android.synthetic.main.fragment_subscription_create.*
 import java.util.*
 
@@ -21,9 +28,17 @@ class SubscriptionCreateDialogFragment : DialogFragment() {
 
     private lateinit var toolbar: Toolbar
 
+    private lateinit var viewModel: SubscriptionsViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.AppTheme_FullScreenDialog)
+
+        // Repository
+        val subscriptionRepository = SubscriptionRepository(activity!!.application)
+
+        // ViewModel
+        viewModel = SubscriptionsViewModel(subscriptionRepository)
     }
 
     @SuppressLint("SetTextI18n")
@@ -48,8 +63,42 @@ class SubscriptionCreateDialogFragment : DialogFragment() {
         toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.title = "Add a Subscription"
         toolbar.inflateMenu(R.menu.fragment_subscription_create_menu)
-        toolbar.setOnMenuItemClickListener {
-            dismiss()
+        toolbar.setOnMenuItemClickListener { it ->
+            when (it.itemId) {
+                R.id.save_sub -> {
+                    // Check text length
+                    val name = view.findViewById<TextView>(R.id.sub_name_field).text.toString().trim()
+                    val cost = view.findViewById<TextView>(R.id.sub_cost_field).text.toString().trim()
+                    val date = view.findViewById<TextView>(R.id.sub_date_field).text.toString().trim()
+                    val interval = view.findViewById<TextView>(R.id.sub_interval_field).text.toString().trim()
+
+                    if (name.isEmpty() ||
+                        cost.isEmpty() ||
+                        date.isEmpty() ||
+                        interval.isEmpty()) {
+                        Toast.makeText(context, "Please complete all fields!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // Create subscription
+                        val sub = Subscription(name, cost.toDouble(), date, interval.toInt())
+
+                        // Call parent fragment's ViewModel
+                        viewModel.addNewSub(sub)
+
+//                        // Refresh parent fragment
+//                        val target = parentFragmentManager.fragments[0]
+////                        Log.v("All Fragments", fm.toString())
+//                        parentFragmentManager
+//                            .beginTransaction()
+//                            .detach(target)
+//                            .attach(target)
+//                            .commit()
+
+                        dismiss()
+                    }
+                }
+                else -> dismiss()
+            }
+
             true
         }
 
@@ -72,8 +121,6 @@ class SubscriptionCreateDialogFragment : DialogFragment() {
         }
 
         // TODO: https://stackoverflow.com/questions/14036674/how-to-limit-the-text-in-numbers-only-from-0-59-in-edit-text-in-android
-        // Setup pre-defined range for interval
-//        sub_interval_field.filters = [InputFilterMinMax()]
     }
 
     override fun onStart() {
