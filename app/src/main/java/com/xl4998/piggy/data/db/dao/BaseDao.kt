@@ -9,12 +9,12 @@ import androidx.room.Update
  * Interface for methods that all children will inherit
  */
 interface BaseDao<T> {
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insert(t: T): Long
+    @Insert
+    fun insert(t: T)
 
-    @Update(onConflict = OnConflictStrategy.ABORT)
+    @Update
     fun update(t: T)
 
     @Delete
-    fun delete(t: T)
+    fun delete(t: T): Int
 }

@@ -52,14 +52,15 @@
             android:layout_margin="8dp"
             android:orientation="horizontal">
 
-            <com.google.android.material.button.MaterialButton
+            <Button
+                android:id="@+id/sub_remove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:text="btn1"
+                android:text="remove"
                 style="?attr/borderlessButtonStyle" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="btn2"

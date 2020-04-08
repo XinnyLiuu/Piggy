@@ -4,16 +4,22 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.entities.Subscription
 
 /**
- * RecyclerView adapter for items in the SubscriptionsFragment's RecyclerView
+ * RecyclerView adapter for items in the SubscriptionListFragment's RecyclerView
  */
 class SubscriptionListAdapter (
+    private var viewModel: SubscriptionsViewModel,
     private var subList: MutableList<Subscription>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -22,6 +28,7 @@ class SubscriptionListAdapter (
         var name: TextView = view.findViewById(R.id.sub_name)
         var cost: TextView = view.findViewById(R.id.sub_cost)
         var interval: TextView = view.findViewById(R.id.sub_due)
+        val removeBtn: Button = view.findViewById(R.id.sub_remove)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -40,6 +47,10 @@ class SubscriptionListAdapter (
         viewHolder.cost.text = subscription.cost.toString()
         // TODO: due date
 
+        // Prepare button listener
+        viewHolder.removeBtn.setOnClickListener {
+            viewModel.removeSub(subscription)
+        }
     }
 
     override fun getItemCount(): Int {

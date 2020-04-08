@@ -4,7 +4,9 @@ import android.app.Application
 import com.xl4998.piggy.data.db.entities.Subscription
 
 /**
- * Handles all subscription related data op erations
+ * Handles all subscription related data operations
+ *
+ * TODO: Handle exceptions
  */
 class SubscriptionRepository(application: Application) {
 
@@ -29,7 +31,14 @@ class SubscriptionRepository(application: Application) {
     /**
      * Inserts a new subscription into the database
      */
-    fun addSubscription(sub: Subscription): Long {
+    fun addSubscription(sub: Subscription) {
         return subscriptionDao.insert(sub)
+    }
+
+    /**
+     * Remove a subscription
+     */
+    fun removeSubscription(sub: Subscription): Int {
+        return subscriptionDao.delete(sub)
     }
 }

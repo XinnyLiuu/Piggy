@@ -16,7 +16,7 @@ import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.SubscriptionRepository
 import kotlinx.android.synthetic.main.fragment_subscriptions.*
 
-class SubscriptionsFragment : Fragment() {
+class SubscriptionListFragment : Fragment() {
 
     // ViewModel
     private lateinit var viewModel: SubscriptionsViewModel
@@ -34,7 +34,7 @@ class SubscriptionsFragment : Fragment() {
         viewModel = SubscriptionsViewModel(subscriptionRepository)
 
         // RecyclerView adapter
-        rvAdapter = SubscriptionListAdapter(mutableListOf())
+        rvAdapter = SubscriptionListAdapter(viewModel, mutableListOf())
 
         // Setup observers
         viewModel.liveAllSubs.observe(this, Observer { subs ->

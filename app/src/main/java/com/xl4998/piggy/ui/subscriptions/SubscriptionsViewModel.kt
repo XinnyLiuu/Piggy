@@ -73,4 +73,18 @@ class SubscriptionsViewModel (private val subscriptionRepository: SubscriptionRe
             }
         }
     }
+
+    /**
+     * Removes a stored subscription
+     */
+    fun removeSub(sub: Subscription) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                // Remove the subscription
+                subscriptionRepository.removeSubscription(sub)
+                allSubs = subscriptionRepository.getAllSubs().toMutableList()
+                liveAllSubs.postValue(allSubs)
+            }
+        }
+    }
 }
