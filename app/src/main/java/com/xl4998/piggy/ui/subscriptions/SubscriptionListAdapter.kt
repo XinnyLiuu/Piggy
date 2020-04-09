@@ -2,7 +2,6 @@ package com.xl4998.piggy.ui.subscriptions
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +34,7 @@ class SubscriptionListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         // Prepare card to be returned on RecyclerView creation
         val card = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_subscription_detail, parent, false) as MaterialCardView
+            .inflate(R.layout.subscription_detail, parent, false) as MaterialCardView
 
         return DetailViewHolder(card)
     }
