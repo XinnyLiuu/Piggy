@@ -6,12 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.xl4998.piggy.data.db.dao.ExpenseDao
 import com.xl4998.piggy.data.db.dao.SubscriptionDao
+import com.xl4998.piggy.data.db.entities.Expense
 import com.xl4998.piggy.data.db.entities.Subscription
 
 /**
  * Room abstracted layer for interaction with SQLite
  */
-@Database(entities = [Subscription::class], version = 1, exportSchema = false)
+@Database(entities = [Subscription::class, Expense::class], version = 1, exportSchema = false)
 abstract class PiggyDatabase : RoomDatabase() {
 
     // DAO

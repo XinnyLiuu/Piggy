@@ -2,7 +2,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.subscriptions.SubscriptionUpdateDialogFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -21,12 +23,13 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/form"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <!-- Name -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sub_name_layout"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="@string/sub_name"
@@ -45,15 +48,17 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Cost -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sub_cost_layout"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="@string/sub_cost"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginBottom="400dp"
+            app:layout_constraintTop_toBottomOf="@id/sub_name_layout"
+            android:layout_marginBottom="500dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -64,6 +69,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Date -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/sub_date_layout"
             android:layout_width="300dp"
@@ -72,8 +78,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginBottom="200dp"
+            app:layout_constraintTop_toBottomOf="@id/sub_cost_layout"
+            android:layout_marginBottom="400dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -85,16 +91,18 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <!-- Interval -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sub_interval_layout"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="@string/sub_interval"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginBottom="0dp"
+            app:layout_constraintTop_toBottomOf="@id/sub_date_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginBottom="300dp"
             app:helperText="1 - Monthly, 2 - Bi-monthly, etc">
 
             <com.google.android.material.textfield.TextInputEditText

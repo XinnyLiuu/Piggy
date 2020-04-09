@@ -13,6 +13,8 @@ import androidx.fragment.app.DialogFragment
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.entities.Subscription
 import kotlinx.android.synthetic.main.fragment_subscription_create_dialog.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.util.*
 
 /**
@@ -80,8 +82,12 @@ class SubscriptionUpdateDialogFragment(
                             .show()
                     } else {
                         // Create subscription
-                        val sub =
-                            Subscription(name.capitalize(), cost.toDouble(), date, interval.toInt())
+                        val sub = Subscription(
+                            name.capitalize(),
+                            "%.2f".format(cost.toDouble()).toDouble(),
+                            date,
+                            interval.toInt()
+                        )
 
                         // Update subscription list view
                         viewModel.updateSub(sub, oldName)

@@ -10,9 +10,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "expenses")
 data class Expense(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
-    @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "category") val category: String,
-    @ColumnInfo(name = "desc") val desc: String,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "cost") val cost: Double,
     @ColumnInfo(name = "date") val date: String,
-    @ColumnInfo(name = "cost") val cost: Double
+    @ColumnInfo(name = "desc") val desc: String
 )

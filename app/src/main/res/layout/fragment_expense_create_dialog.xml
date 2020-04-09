@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.subscriptions.SubscriptionCreateDialogFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.expenses.ExpenseCreateDialogFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -27,12 +27,12 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Name -->
+        <!-- Category -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/sub_name_layout"
+            android:id="@+id/expense_category_layout"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:hint="@string/sub_name"
+            android:hint="Category"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +41,28 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/sub_name_field"
+                android:id="@+id/expense_category_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Name -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/expense_name_layout"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:hint="Name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/expense_category_layout"
+            android:layout_marginBottom="500dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/expense_name_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -50,19 +71,19 @@
 
         <!-- Cost -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/sub_cost_layout"
+            android:id="@+id/expense_cost_layout"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:hint="@string/sub_cost"
+            android:hint="Cost"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sub_name_layout"
-            android:layout_marginBottom="500dp"
+            app:layout_constraintTop_toBottomOf="@id/expense_name_layout"
+            android:layout_marginBottom="400dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/sub_cost_field"
+                android:id="@+id/expense_cost_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal" />
@@ -71,19 +92,19 @@
 
         <!-- Date -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/sub_date_layout"
+            android:id="@+id/expense_date_layout"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:hint="@string/sub_date"
+            android:hint="Date of Transaction"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sub_cost_layout"
-            android:layout_marginBottom="400dp"
+            app:layout_constraintTop_toBottomOf="@id/expense_cost_layout"
+            android:layout_marginBottom="300dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/sub_date_field"
+                android:id="@+id/expense_date_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:focusable="false"
@@ -91,22 +112,21 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Interval -->
+        <!-- Description -->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/sub_interval_layout"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:hint="@string/sub_interval"
+            android:hint="Description"
+            app:layout_constraintTop_toBottomOf="@id/expense_date_layout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sub_date_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_marginBottom="300dp"
-            app:helperText="1 - Monthly, 2 - Bi-monthly, etc">
+            android:layout_marginBottom="200dp"
+            app:helperText="(Optional) Describe what this expense was for">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/sub_interval_field"
+                android:id="@+id/expense_desc_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" />

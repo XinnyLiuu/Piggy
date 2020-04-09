@@ -1,5 +1,6 @@
 package com.xl4998.piggy.ui.subscriptions
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -39,12 +40,13 @@ class SubscriptionListAdapter(
         return DetailViewHolder(card)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         // Setup subscription detail view
         val subscription = subList[position]
         val viewHolder = holder as DetailViewHolder
         viewHolder.name.text = subscription.name
-        viewHolder.cost.text = subscription.cost.toString()
+        viewHolder.cost.text = "%.2f".format(subscription.cost)
         viewHolder.date.text = String.format(
             "Next Payment - %s month(s) from %s",
             subscription.interval,
@@ -80,7 +82,6 @@ class SubscriptionListAdapter(
      */
     fun setSubs(subList: MutableList<Subscription>) {
         this.subList = subList
-        Log.v("Subs", this.subList.toString())
         notifyDataSetChanged()
     }
 }

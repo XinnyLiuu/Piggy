@@ -13,8 +13,9 @@ import androidx.fragment.app.DialogFragment
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.entities.Subscription
 import kotlinx.android.synthetic.main.fragment_subscription_create_dialog.*
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.util.*
-import kotlin.math.round
 
 /**
  * A full screen dialog that will assist in creating a new subscription
@@ -77,7 +78,7 @@ class SubscriptionCreateDialogFragment(
                         // Create subscription
                         val sub = Subscription(
                             name.capitalize(),
-                            (round(cost.toDouble() * 100) / 100),
+                            "%.2f".format(cost.toDouble()).toDouble(),
                             date,
                             interval.toInt()
                         )
