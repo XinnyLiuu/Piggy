@@ -62,7 +62,7 @@ class DashboardFragment : Fragment() {
         pie = view.findViewById(R.id.pie)
         pie.description.isEnabled = false
         pie.dragDecelerationFrictionCoef = 0.95f
-        pie.setExtraOffsets(25f, 10f, 25f, 5f)
+        pie.setExtraOffsets(20f, 10f, 20f, 10f)
         pie.setUsePercentValues(true)
         pie.rotationAngle = 0f
         pie.isRotationEnabled = true
@@ -80,7 +80,7 @@ class DashboardFragment : Fragment() {
         pie.setHoleColor(Color.WHITE)
         pie.centerText = generateCenterSpannableText()
 
-        setData(10, 5f)
+        setData(8, 5f)
 
         // Pie Chart legend
         val legend: Legend = pie.legend

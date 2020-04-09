@@ -7,6 +7,11 @@
         android:title="@string/title_dashboard" />
 
     <item
+        android:id="@+id/navigation_expenses"
+        android:icon="@drawable/round_local_atm_24"
+        android:title="Expenses" />
+
+    <item
         android:id="@+id/navigation_subscriptions"
         android:icon="@drawable/round_card_membership_24"
         android:title="@string/title_subscriptions" />

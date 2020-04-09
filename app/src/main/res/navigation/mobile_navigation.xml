@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
+        android:id="@+id/navigation_expenses"
+        android:name="com.xl4998.piggy.ui.expenses.ExpensesFragment"
+        android:label="Expenses"
+        tools:layout="@layout/fragment_expenses" />
+
+    <fragment
         android:id="@+id/navigation_subscriptions"
         android:name="com.xl4998.piggy.ui.subscriptions.SubscriptionsFragment"
         android:label="@string/title_subscriptions"
