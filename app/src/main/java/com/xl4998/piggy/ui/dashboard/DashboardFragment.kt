@@ -33,7 +33,7 @@ class DashboardFragment : Fragment() {
     // Pie Chart
     private lateinit var pie: PieChart
 
-    // Dummy data
+    // Dummy data TODO: Populate with expenses
     private val parties: Array<String> = arrayOf(
         "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
         "Party I", "Party J", "Party K", "Party L", "Party M", "Party N", "Party O", "Party P",
@@ -68,6 +68,7 @@ class DashboardFragment : Fragment() {
         pie.isRotationEnabled = true
         pie.isHighlightPerTapEnabled = true
         pie.animateY(2000, Easing.EaseInOutQuad)
+//        pie.setEntryLabelColor(Color.BLACK)
 
         // Pie Chart center hole
         pie.isDrawHoleEnabled = true
@@ -79,14 +80,13 @@ class DashboardFragment : Fragment() {
         pie.setHoleColor(Color.WHITE)
         pie.centerText = generateCenterSpannableText()
 
-        setData(5, 5f)
+        setData(10, 5f)
 
         // Pie Chart legend
         val legend: Legend = pie.legend
         legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
         legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
         legend.orientation = Legend.LegendOrientation.VERTICAL
-        legend.setDrawInside(true)
         legend.isEnabled = true
 
         return view
@@ -100,8 +100,17 @@ class DashboardFragment : Fragment() {
      * Sets the data for the pie chart
      */
     private fun setData(count: Int, range: Float) {
-        val entries = ArrayList<PieEntry>()
+        // Entries to be represented in the pie chart
+        val entries = mutableListOf<PieEntry>()
 
+        // Colors for pie chart
+        val piggyColors = mutableListOf(
+            ColorTemplate.rgb("#5026a7"), ColorTemplate.rgb("#8d448b"), ColorTemplate.rgb("#cc6a87"), ColorTemplate.rgb("#eccd8f"), ColorTemplate.rgb("#ffbea3"), ColorTemplate.rgb("#fe9191"), ColorTemplate.rgb("#e4406f"), ColorTemplate.rgb("#ca2374"), ColorTemplate.rgb("#9c297f")
+        )
+
+        piggyColors.shuffle()
+
+        // Add entries to the pie chart
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
         for (i in 0 until count) {
@@ -112,35 +121,25 @@ class DashboardFragment : Fragment() {
                 )
             )
         }
-        val dataSet = PieDataSet(entries, "Election Results")
+
+        // Data Set configs
+        val dataSet = PieDataSet(entries, "Expenses")
         dataSet.sliceSpace = 3f
         dataSet.selectionShift = 5f
-
-        // add a lot of colors
-        val colors = ArrayList<Int>()
-        for (c in ColorTemplate.VORDIPLOM_COLORS) colors.add(c)
-        for (c in ColorTemplate.JOYFUL_COLORS) colors.add(c)
-        for (c in ColorTemplate.COLORFUL_COLORS) colors.add(c)
-        for (c in ColorTemplate.LIBERTY_COLORS) colors.add(c)
-        for (c in ColorTemplate.PASTEL_COLORS) colors.add(c)
-        colors.add(ColorTemplate.getHoloBlue())
-        dataSet.colors = colors
-        //dataSet.setSelectionShift(0f);
+        dataSet.colors = piggyColors
+        dataSet.valueTextColor = Color.BLACK
         dataSet.valueLinePart1OffsetPercentage = 80f
         dataSet.valueLinePart1Length = 0.2f
         dataSet.valueLinePart2Length = 0.4f
-
-        //dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
         dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+
+        // Data setup
         val data = PieData(dataSet)
         data.setValueFormatter(PercentFormatter())
         data.setValueTextSize(11f)
         data.setValueTextColor(Color.BLACK)
-        pie.data = data
 
-        // undo all highlights
-        pie.highlightValues(null)
-        pie.invalidate()
+        pie.data = data
     }
 
     /**
@@ -148,7 +147,7 @@ class DashboardFragment : Fragment() {
      */
     private fun generateCenterSpannableText(): SpannableString? {
         val header = "Expenses"
-        val subHeader = "Piggy"
+        val subHeader = "Powered by Piggy"
 
         val s = SpannableString("$header\n$subHeader")
         s.setSpan(RelativeSizeSpan(1.2f), 0, header.length, 0)
