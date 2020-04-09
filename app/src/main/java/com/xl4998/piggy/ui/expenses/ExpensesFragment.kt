@@ -1,19 +1,16 @@
 package com.xl4998.piggy.ui.expenses
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.ExpenseRepository
-import com.xl4998.piggy.ui.subscriptions.SubscriptionCreateDialogFragment
-import com.xl4998.piggy.ui.subscriptions.SubscriptionListAdapter
 import kotlinx.android.synthetic.main.fragment_expenses.*
-import kotlinx.android.synthetic.main.fragment_subscriptions.*
 
 /**
  * Fragment that displays the lists of all the user's expenses
@@ -22,6 +19,9 @@ class ExpensesFragment : Fragment() {
 
     // ViewModel
     private lateinit var viewModel: ExpensesViewModel
+
+    // RecyclerView
+    private lateinit var rvAdapter: ExpenseListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +32,13 @@ class ExpensesFragment : Fragment() {
         // ViewModel
         viewModel = ExpensesViewModel(expenseRepository)
 
-        // RecyclerView adapter TODO
+        // RecyclerView adapter
+        rvAdapter = ExpenseListAdapter(parentFragmentManager, viewModel, mutableListOf())
 
-        // Setup observers TODO
+        // Setup observers
+        viewModel.liveAllExpenses.observe(this, Observer { subs ->
+            rvAdapter.setExpenses(subs)
+        })
     }
 
     override fun onCreateView(
@@ -49,7 +53,7 @@ class ExpensesFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
-//        recyclerView.adapter = rvAdapter
+        recyclerView.adapter = rvAdapter
 
         return view
     }

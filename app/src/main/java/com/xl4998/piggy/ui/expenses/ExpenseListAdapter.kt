@@ -12,10 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.entities.Expense
-import com.xl4998.piggy.data.db.entities.Subscription
-import com.xl4998.piggy.ui.subscriptions.SubscriptionListAdapter
-import com.xl4998.piggy.ui.subscriptions.SubscriptionUpdateDialogFragment
-import org.w3c.dom.Text
 
 /**
  * RecyclerView adapter for items in the ExpensesFragment's RecyclerView
@@ -64,7 +60,7 @@ class ExpenseListAdapter(
             val dialog = ExpenseUpdateDialogFragment(viewModel)
 
             val bundle = Bundle()
-            bundle.putLong("id", expense.id)
+            bundle.putLong("id", expense.id!!)
             bundle.putString("category", expense.category)
             bundle.putString("name", expense.name)
             bundle.putString("cost", expense.cost.toString())
