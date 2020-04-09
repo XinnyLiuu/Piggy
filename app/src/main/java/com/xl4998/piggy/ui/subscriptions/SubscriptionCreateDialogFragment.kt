@@ -38,7 +38,8 @@ class SubscriptionCreateDialogFragment(
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view: View = inflater.inflate(R.layout.fragment_subscription_create_dialog, container, false)
+        val view: View =
+            inflater.inflate(R.layout.fragment_subscription_create_dialog, container, false)
 
         // Get the toolbar
         toolbar = view.findViewById(R.id.toolbar)
@@ -70,7 +71,8 @@ class SubscriptionCreateDialogFragment(
                     val interval = intervalField.text.toString().trim()
 
                     if (name.isEmpty() || cost.isEmpty() || date.isEmpty() || interval.isEmpty()) {
-                        Toast.makeText(context, "Please complete all fields!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Please complete all fields!", Toast.LENGTH_SHORT)
+                            .show()
                     } else {
                         // Create subscription
                         val sub = Subscription(

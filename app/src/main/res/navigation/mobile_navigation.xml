@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/navigation_subscriptions"
-        android:name="com.xl4998.piggy.ui.subscriptions.SubscriptionListFragment"
+        android:name="com.xl4998.piggy.ui.subscriptions.SubscriptionsFragment"
         android:label="@string/title_subscriptions"
         tools:layout="@layout/fragment_subscriptions" />
 

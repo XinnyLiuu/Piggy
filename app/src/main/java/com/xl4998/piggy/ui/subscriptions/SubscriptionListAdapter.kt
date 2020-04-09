@@ -14,7 +14,7 @@ import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.entities.Subscription
 
 /**
- * RecyclerView adapter for items in the SubscriptionListFragment's RecyclerView
+ * RecyclerView adapter for items in the SubscriptionsFragment's RecyclerView
  */
 class SubscriptionListAdapter(
     private val parentFragmentManager: FragmentManager,

@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_subscriptions.*
 /**
  * Fragment that displays the list of all the user's subscriptions
  */
-class SubscriptionListFragment : Fragment() {
+class SubscriptionsFragment : Fragment() {
 
     // ViewModel
     private lateinit var viewModel: SubscriptionsViewModel
@@ -42,7 +42,8 @@ class SubscriptionListFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_subscriptions, container, false)
