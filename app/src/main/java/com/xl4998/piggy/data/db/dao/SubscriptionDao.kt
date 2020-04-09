@@ -5,7 +5,7 @@ import androidx.room.Query
 import com.xl4998.piggy.data.db.entities.Subscription
 
 /**
- * Represents the object used to interact with the subscription db entity
+ * Used by Room to interact with Subscription entities
  */
 @Dao
 interface SubscriptionDao : BaseDao<Subscription> {

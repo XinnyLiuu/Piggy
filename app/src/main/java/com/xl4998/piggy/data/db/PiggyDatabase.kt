@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.xl4998.piggy.data.db.dao.ExpenseDao
 import com.xl4998.piggy.data.db.dao.SubscriptionDao
 import com.xl4998.piggy.data.db.entities.Subscription
 
@@ -15,6 +16,7 @@ abstract class PiggyDatabase : RoomDatabase() {
 
     // DAO
     abstract fun subDao(): SubscriptionDao
+    abstract fun expenseDao(): ExpenseDao
 
     // Singleton
     companion object {

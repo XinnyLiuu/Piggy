@@ -20,7 +20,6 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.xl4998.piggy.R
-import java.util.*
 
 /**
  * Fragment that prepares the dashboard view to show the user's expenses
@@ -147,7 +146,7 @@ class DashboardFragment : Fragment() {
      */
     private fun generateCenterSpannableText(): SpannableString? {
         val header = "Expenses"
-        val subHeader = "Powered by Piggy"
+        val subHeader = "Powered by Piggy" // TODO: Make this for the current month
 
         val s = SpannableString("$header\n$subHeader")
         s.setSpan(RelativeSizeSpan(1.2f), 0, header.length, 0)
