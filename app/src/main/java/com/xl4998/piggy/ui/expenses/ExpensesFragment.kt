@@ -36,8 +36,8 @@ class ExpensesFragment : Fragment() {
         rvAdapter = ExpenseListAdapter(parentFragmentManager, viewModel, mutableListOf())
 
         // Setup observers
-        viewModel.liveAllExpenses.observe(this, Observer { subs ->
-            rvAdapter.setExpenses(subs)
+        viewModel.liveAllExpenses.observe(this, Observer { expenses ->
+            rvAdapter.setExpenses(expenses)
         })
     }
 

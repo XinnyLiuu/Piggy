@@ -109,11 +109,15 @@ class ExpenseCreateDialogFragment(
                         costField.text = ""
                         dateField.text = ""
                         descField.text = ""
+
+                        dismiss()
                     }
+                }
+                else -> {
+                    dismiss()
                 }
             }
 
-            dismiss()
             true
         }
 

@@ -89,11 +89,15 @@ class SubscriptionCreateDialogFragment(
                         costField.text = ""
                         dateField.text = ""
                         intervalField.text = ""
+
+                        dismiss()
                     }
+                }
+                else -> {
+                    dismiss()
                 }
             }
 
-            dismiss()
             true
         }
 
