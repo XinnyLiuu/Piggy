@@ -108,15 +108,21 @@ class DashboardFragment : Fragment() {
 
                 // Colors for pie chart
                 val piggyColors = mutableListOf(
-                    ColorTemplate.rgb("#5026a7"),
-                    ColorTemplate.rgb("#8d448b"),
-                    ColorTemplate.rgb("#cc6a87"),
-                    ColorTemplate.rgb("#eccd8f"),
-                    ColorTemplate.rgb("#ffbea3"),
-                    ColorTemplate.rgb("#fe9191"),
-                    ColorTemplate.rgb("#e4406f"),
-                    ColorTemplate.rgb("#ca2374"),
-                    ColorTemplate.rgb("#9c297f")
+                    ColorTemplate.rgb("#74d6e0"),
+                    ColorTemplate.rgb("#ecaaae"),
+                    ColorTemplate.rgb("#7fe1cf"),
+                    ColorTemplate.rgb("#e1b0dd"),
+                    ColorTemplate.rgb("#aad9a3"),
+                    ColorTemplate.rgb("#74aff3"),
+                    ColorTemplate.rgb("#d9da9e"),
+                    ColorTemplate.rgb("#bcb8ec"),
+                    ColorTemplate.rgb("#efb08d"),
+                    ColorTemplate.rgb("#a2bfe9"),
+                    ColorTemplate.rgb("#e3c297"),
+                    ColorTemplate.rgb("#7bcaed"),
+                    ColorTemplate.rgb("#e9bfae"),
+                    ColorTemplate.rgb("#dfc3de"),
+                    ColorTemplate.rgb("#b9d9be")
                 )
 
                 piggyColors.shuffle()
@@ -134,8 +140,10 @@ class DashboardFragment : Fragment() {
                 }
 
                 for ((category, cost) in costPerCategory) {
+                    val label: String = "%.2f".format(cost)
+
                     entries.add(
-                        PieEntry(cost!!.toFloat(), category)
+                        PieEntry(cost!!.toFloat(), "$category - $label")
                     )
                 }
 
