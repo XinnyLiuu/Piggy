@@ -102,14 +102,17 @@ class ExpensesFragment : Fragment() {
                         viewModel.getExpensesLastMonth()
                     }
 
+                    // Show past six month's expenses
                     TimeFilters.PAST_SIX_MONTHS -> {
                         viewModel.getExpensesLastSixMonths()
                     }
 
+                    // Show this year's expenses
                     TimeFilters.THIS_YEAR -> {
                         viewModel.getExpensesThisYear()
                     }
 
+                    // Show all expenses
                     TimeFilters.ALL -> {
                         viewModel.getAllExpenses()
                     }
