@@ -1,13 +1,10 @@
 package com.xl4998.piggy.ui.expenses
 
 import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
@@ -15,7 +12,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.entities.Expense
-import com.xl4998.piggy.utils.ExpenseCategory
+import com.xl4998.piggy.utils.ExpenseCategories
 import kotlinx.android.synthetic.main.fragment_expense_create_dialog.*
 import java.util.*
 
@@ -68,16 +65,16 @@ class ExpenseUpdateDialogFragment(
 
         // Setup category dropdown
         val categories = listOf(
-            ExpenseCategory.ENTERTAINMENT,
-            ExpenseCategory.FEES,
-            ExpenseCategory.FOOD,
-            ExpenseCategory.MISC,
-            ExpenseCategory.PERSONAL,
-            ExpenseCategory.SHOPPING,
-            ExpenseCategory.SUBSCRIPTION,
-            ExpenseCategory.TRANSPORTATION
+            ExpenseCategories.ENTERTAINMENT,
+            ExpenseCategories.FEES,
+            ExpenseCategories.FOOD,
+            ExpenseCategories.MISC,
+            ExpenseCategories.PERSONAL,
+            ExpenseCategories.SHOPPING,
+            ExpenseCategories.SUBSCRIPTION,
+            ExpenseCategories.TRANSPORTATION
         )
-        val adapter = ArrayAdapter(requireContext(), R.layout.expense_category_item, categories)
+        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, categories)
         expense_category_field.setAdapter(adapter)
 
         // Setup listeners for the toolbar

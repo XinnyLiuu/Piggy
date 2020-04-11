@@ -55,8 +55,8 @@ class ExpenseListAdapter(
             viewModel.removeExpense(expense)
         }
 
+        // Show update dialog fragment
         viewHolder.editBtn.setOnClickListener {
-            // Show dialog fragment
             val dialog = ExpenseUpdateDialogFragment(viewModel)
 
             val bundle = Bundle()

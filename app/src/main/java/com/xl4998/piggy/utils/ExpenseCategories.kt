@@ -1,9 +1,9 @@
 package com.xl4998.piggy.utils
 
 /**
- * Categories for all expenses inputted into Piggy
+ * Categories choices for all expenses inputted into Piggy
  */
-object ExpenseCategory {
+object ExpenseCategories {
     const val FOOD = "Food"
     const val ENTERTAINMENT = "Entertainment"
     const val TRANSPORTATION = "Transportation"
