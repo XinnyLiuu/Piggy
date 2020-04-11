@@ -2,7 +2,6 @@ package com.xl4998.piggy.ui.dashboard
 
 import android.graphics.Color
 import android.graphics.Typeface
-import android.opengl.Visibility
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -11,8 +10,10 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
@@ -24,28 +25,55 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.ExpenseRepository
 import com.xl4998.piggy.data.db.entities.Expense
-import kotlinx.coroutines.*
+import com.xl4998.piggy.utils.TimeFilters
+import kotlinx.android.synthetic.main.fragment_expenses.*
 
 /**
  * Fragment that prepares the dashboard view to show the user's expenses
  */
 class DashboardFragment : Fragment() {
 
-    // Coroutine
-    private val job = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + job)
-
-    // Repository
-    private lateinit var expenseRepository: ExpenseRepository
+    // ViewModel
+    private lateinit var viewModel: DashboardViewModel
 
     // Pie Chart
     private lateinit var pie: PieChart
+
+    // Colors for pie chart
+    private val piggyColors = mutableListOf(
+        ColorTemplate.rgb("#74d6e0"),
+        ColorTemplate.rgb("#ecaaae"),
+        ColorTemplate.rgb("#7fe1cf"),
+        ColorTemplate.rgb("#e1b0dd"),
+        ColorTemplate.rgb("#aad9a3"),
+        ColorTemplate.rgb("#74aff3"),
+        ColorTemplate.rgb("#d9da9e"),
+        ColorTemplate.rgb("#bcb8ec"),
+        ColorTemplate.rgb("#efb08d"),
+        ColorTemplate.rgb("#a2bfe9"),
+        ColorTemplate.rgb("#e3c297"),
+        ColorTemplate.rgb("#7bcaed"),
+        ColorTemplate.rgb("#e9bfae"),
+        ColorTemplate.rgb("#dfc3de"),
+        ColorTemplate.rgb("#b9d9be")
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Repository
-        expenseRepository = ExpenseRepository(activity!!.application)
+        val expenseRepository = ExpenseRepository(activity!!.application)
+
+        // ViewModel
+        viewModel = DashboardViewModel(expenseRepository)
+
+        // Setup observers
+        viewModel.liveAllExpenses.observe(this, Observer { expenses ->
+            setData(expenses)
+            pie.notifyDataSetChanged()
+            pie.invalidate()
+            pie.animateY(2000, Easing.EaseInOutQuad)
+        })
     }
 
     override fun onCreateView(
@@ -76,8 +104,6 @@ class DashboardFragment : Fragment() {
         pie.setHoleColor(Color.WHITE)
         pie.centerText = generateCenterSpannableText()
 
-        setData()
-
         // Pie Chart legend
         val legend: Legend = pie.legend
         legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
@@ -88,91 +114,107 @@ class DashboardFragment : Fragment() {
         return view
     }
 
-    override fun onDestroy() {
-        job.cancel()
-        super.onDestroy()
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    /**
-     * Asynchronously get expense data in the IO thread
-     */
-    private suspend fun getExpenseData() = withContext(Dispatchers.IO) {
-        expenseRepository.getAllExpenses()
+        // Show this month's expenses
+        viewModel.getExpensesThisMonth()
+
+        // Setup time selection dropdown
+        val times = listOf(
+            TimeFilters.THIS_MONTH,
+            TimeFilters.LAST_MONTH,
+            TimeFilters.PAST_SIX_MONTHS,
+            TimeFilters.THIS_YEAR,
+            TimeFilters.ALL
+        )
+
+        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, times)
+
+        expense_time_filter.setAdapter(adapter)
+        expense_time_filter.inputType = 0 // Disable input from time filter dropdown
+        expense_time_filter.setText(expense_time_filter.adapter.getItem(0).toString(), false)
+
+        // Set time filter dropdown listeners
+        expense_time_filter.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, position, _ ->
+                when (adapter.getItem(position)) {
+                    // Show this month's expenses
+                    TimeFilters.THIS_MONTH -> {
+                        viewModel.getExpensesThisMonth()
+                    }
+
+                    // Show last month's expenses
+                    TimeFilters.LAST_MONTH -> {
+                        viewModel.getExpensesLastMonth()
+                    }
+
+                    // Show past six month's expenses
+                    TimeFilters.PAST_SIX_MONTHS -> {
+                        viewModel.getExpensesLastSixMonths()
+                    }
+
+                    // Show this year's expenses
+                    TimeFilters.THIS_YEAR -> {
+                        viewModel.getExpensesThisYear()
+                    }
+
+                    // Show all expenses
+                    TimeFilters.ALL -> {
+                        viewModel.getAllExpenses()
+                    }
+                }
+            }
+
     }
 
     /**
      * Sets the data for the pie chart
      */
-    private fun setData() {
+    private fun setData(expenses: MutableList<Expense>) {
+        piggyColors.shuffle()
+
         // Entries to be represented in the pie chart
         val entries = mutableListOf<PieEntry>()
 
-        // Grab the latest expenses
-        var expenses: List<Expense>?
+        // Add each expense by category in the pie chart
+        val costPerCategory = hashMapOf<String, Double?>()
 
-        uiScope.launch {
-           expenses = getExpenseData()
+        for (e in expenses) {
+            val category = e.category
+            val cost = e.cost
 
-            // Colors for pie chart
-            val piggyColors = mutableListOf(
-                ColorTemplate.rgb("#74d6e0"),
-                ColorTemplate.rgb("#ecaaae"),
-                ColorTemplate.rgb("#7fe1cf"),
-                ColorTemplate.rgb("#e1b0dd"),
-                ColorTemplate.rgb("#aad9a3"),
-                ColorTemplate.rgb("#74aff3"),
-                ColorTemplate.rgb("#d9da9e"),
-                ColorTemplate.rgb("#bcb8ec"),
-                ColorTemplate.rgb("#efb08d"),
-                ColorTemplate.rgb("#a2bfe9"),
-                ColorTemplate.rgb("#e3c297"),
-                ColorTemplate.rgb("#7bcaed"),
-                ColorTemplate.rgb("#e9bfae"),
-                ColorTemplate.rgb("#dfc3de"),
-                ColorTemplate.rgb("#b9d9be")
-            )
-
-            piggyColors.shuffle()
-
-            // Add each expense by category in the pie chart
-            val costPerCategory = hashMapOf<String, Double?>()
-
-            for (e in expenses!!) {
-                val category = e.category
-                val cost = e.cost
-
-                if (category in costPerCategory) {
-                    costPerCategory[category] = costPerCategory[category]?.plus(cost)
-                } else costPerCategory[category] = e.cost
-            }
-
-            for ((category, cost) in costPerCategory) {
-                val label: String = "%.2f".format(cost)
-
-                entries.add(
-                    PieEntry(cost!!.toFloat(), "$category - $label")
-                )
-            }
-
-            // Data Set configs
-            val dataSet = PieDataSet(entries, "Expenses")
-            dataSet.sliceSpace = 3f
-            dataSet.selectionShift = 5f
-            dataSet.colors = piggyColors
-            dataSet.valueTextColor = Color.BLACK
-            dataSet.valueLinePart1OffsetPercentage = 80f
-            dataSet.valueLinePart1Length = 0.2f
-            dataSet.valueLinePart2Length = 0.4f
-            dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-
-            // Data setup
-            val data = PieData(dataSet)
-            data.setValueFormatter(PercentFormatter())
-            data.setValueTextSize(11f)
-            data.setValueTextColor(Color.BLACK)
-
-            pie.data = data
+            if (category in costPerCategory) {
+                costPerCategory[category] = costPerCategory[category]?.plus(cost)
+            } else costPerCategory[category] = e.cost
         }
+
+        for ((category, cost) in costPerCategory) {
+            val label: String = "%.2f".format(cost)
+
+            entries.add(
+                PieEntry(cost!!.toFloat(), "$category - $label")
+            )
+        }
+
+        // Data Set configs
+        val dataSet = PieDataSet(entries, "Expenses")
+        dataSet.sliceSpace = 3f
+        dataSet.selectionShift = 5f
+        dataSet.colors = piggyColors
+        dataSet.valueTextColor = Color.BLACK
+        dataSet.valueLinePart1OffsetPercentage = 80f
+        dataSet.valueLinePart1Length = 0.2f
+        dataSet.valueLinePart2Length = 0.4f
+        dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+
+        // Data setup
+        val data = PieData(dataSet)
+        data.setValueFormatter(PercentFormatter())
+        data.setValueTextSize(11f)
+        data.setValueTextColor(Color.BLACK)
+
+        pie.data = data
     }
 
     /**

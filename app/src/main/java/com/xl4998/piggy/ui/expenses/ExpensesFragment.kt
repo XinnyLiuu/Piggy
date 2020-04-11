@@ -65,13 +65,16 @@ class ExpensesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Show this month's expenses
+        viewModel.getExpensesThisMonth()
+
         // Prepare dialog fragment
         val createExpenseDialog = ExpenseCreateDialogFragment(viewModel)
 
         // Setup listeners for button
         add_expense_button.setOnClickListener {
             createExpenseDialog.show(parentFragmentManager, "Create Expense Dialog")
-            expense_time_filter.setText("")
+            viewModel.getExpensesThisMonth()
         }
 
         // Setup time selection dropdown
@@ -87,6 +90,7 @@ class ExpensesFragment : Fragment() {
 
         expense_time_filter.setAdapter(adapter)
         expense_time_filter.inputType = 0 // Disable input from time filter dropdown
+        expense_time_filter.setText(expense_time_filter.adapter.getItem(0).toString(), false)
 
         // Set time filter dropdown listeners
         expense_time_filter.onItemClickListener =

@@ -1,4 +1,4 @@
-package com.xl4998.piggy.ui.expenses
+package com.xl4998.piggy.ui.dashboard
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,9 +10,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel for Expenses fragments
+ * ViewModel for Dashboard fragments
  */
-class ExpensesViewModel(
+class DashboardViewModel(
     private val expenseRepository: ExpenseRepository
 ) : ViewModel() {
 
@@ -35,21 +35,6 @@ class ExpensesViewModel(
                 liveAllExpenses.postValue(allExpenses)
             }
         }
-    }
-
-    /**
-     * Grab an expense by name
-     */
-    fun getExpenseById(id: Long): Expense? {
-        var expense: Expense? = null
-
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                expense = expenseRepository.getExpenseById(id)
-            }
-        }
-
-        return expense
     }
 
     /**
@@ -99,48 +84,6 @@ class ExpensesViewModel(
             withContext(Dispatchers.IO) {
                 // Get last year's expenses
                 allExpenses = expenseRepository.getExpensesThisYear()
-                liveAllExpenses.postValue(allExpenses)
-            }
-        }
-    }
-
-    /**
-     * Inserts a new expense into the database
-     */
-    fun addNewExpense(expense: Expense) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                // Add the expense
-                expenseRepository.addExpense(expense)
-                allExpenses = expenseRepository.getAllExpenses().toMutableList()
-                liveAllExpenses.postValue(allExpenses)
-            }
-        }
-    }
-
-    /**
-     * Removes a stored expense
-     */
-    fun removeExpense(expense: Expense) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                // Remove the expense
-                expenseRepository.removeExpense(expense)
-                allExpenses = expenseRepository.getAllExpenses().toMutableList()
-                liveAllExpenses.postValue(allExpenses)
-            }
-        }
-    }
-
-    /**
-     * Update a stored expense
-     */
-    fun updateExpense(expense: Expense) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                // Update the expense
-                expenseRepository.updateExpense(expense)
-                allExpenses = expenseRepository.getAllExpenses().toMutableList()
                 liveAllExpenses.postValue(allExpenses)
             }
         }
