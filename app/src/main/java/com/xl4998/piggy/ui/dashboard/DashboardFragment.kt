@@ -55,51 +55,35 @@ class DashboardFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
-        var expenses: List<Expense>?
+        // Setup Pie Chart
+        pie = view.findViewById(R.id.pie)
+        pie.description.isEnabled = false
+        pie.dragDecelerationFrictionCoef = 0.95f
+        pie.setExtraOffsets(15f, 10f, 15f, 10f)
+        pie.setUsePercentValues(true)
+        pie.rotationAngle = 0f
+        pie.isRotationEnabled = true
+        pie.isHighlightPerTapEnabled = true
+        pie.animateY(2000, Easing.EaseInOutQuad)
 
-        // Check the size of data to determine which screen to show
-        uiScope.launch {
-            expenses = getExpenseData()
+        // Pie Chart center hole
+        pie.isDrawHoleEnabled = true
+        pie.holeRadius = 45f
+        pie.transparentCircleRadius = 47f
+        pie.setTransparentCircleColor(Color.WHITE)
+        pie.setTransparentCircleAlpha(110)
+        pie.setDrawCenterText(true)
+        pie.setHoleColor(Color.WHITE)
+        pie.centerText = generateCenterSpannableText()
 
-            if (expenses!!.isEmpty()) {
-                view.findViewById<TextView>(R.id.message).visibility = View.VISIBLE
-                view.findViewById<PieChart>(R.id.pie).visibility = View.GONE
-            }
-            else {
-                view.findViewById<TextView>(R.id.message).visibility = View.GONE
-                view.findViewById<PieChart>(R.id.pie).visibility = View.VISIBLE
+        setData()
 
-                // Setup Pie Chart
-                pie = view.findViewById(R.id.pie)
-                pie.description.isEnabled = false
-                pie.dragDecelerationFrictionCoef = 0.95f
-                pie.setExtraOffsets(15f, 10f, 15f, 10f)
-                pie.setUsePercentValues(true)
-                pie.rotationAngle = 0f
-                pie.isRotationEnabled = true
-                pie.isHighlightPerTapEnabled = true
-                pie.animateY(2000, Easing.EaseInOutQuad)
-
-                // Pie Chart center hole
-                pie.isDrawHoleEnabled = true
-                pie.holeRadius = 45f
-                pie.transparentCircleRadius = 47f
-                pie.setTransparentCircleColor(Color.WHITE)
-                pie.setTransparentCircleAlpha(110)
-                pie.setDrawCenterText(true)
-                pie.setHoleColor(Color.WHITE)
-                pie.centerText = generateCenterSpannableText()
-
-                setData()
-
-                // Pie Chart legend
-                val legend: Legend = pie.legend
-                legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-                legend.orientation = Legend.LegendOrientation.VERTICAL
-                legend.isEnabled = true
-            }
-        }
+        // Pie Chart legend
+        val legend: Legend = pie.legend
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+        legend.orientation = Legend.LegendOrientation.VERTICAL
+        legend.isEnabled = true
 
         return view
     }
