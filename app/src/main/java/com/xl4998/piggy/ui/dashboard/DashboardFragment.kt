@@ -55,53 +55,51 @@ class DashboardFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
-//        // Check the size of data
-//        uiScope.launch {
-//            withContext(Dispatchers.IO) {
-//                // Grab the latest expenses
-//                val expenses = expenseRepository.getAllExpenses()
-//
-//                if (expenses.isEmpty()) {
-//                    view.findViewById<TextView>(R.id.message).visibility = View.VISIBLE
-//                    view.findViewById<PieChart>(R.id.pie).visibility = View.GONE
-//                }
-//                else {
-//                    view.findViewById<TextView>(R.id.message).visibility = View.GONE
-//                    view.findViewById<PieChart>(R.id.pie).visibility = View.VISIBLE
+        var expenses: List<Expense>?
 
-        // Setup Pie Chart
-        pie = view.findViewById(R.id.pie)
-        pie.description.isEnabled = false
-        pie.dragDecelerationFrictionCoef = 0.95f
-        pie.setExtraOffsets(15f, 10f, 15f, 10f)
-        pie.setUsePercentValues(true)
-        pie.rotationAngle = 0f
-        pie.isRotationEnabled = true
-        pie.isHighlightPerTapEnabled = true
-        pie.animateY(2000, Easing.EaseInOutQuad)
+        // Check the size of data to determine which screen to show
+        uiScope.launch {
+            expenses = getExpenseData()
 
-        // Pie Chart center hole
-        pie.isDrawHoleEnabled = true
-        pie.holeRadius = 45f
-        pie.transparentCircleRadius = 47f
-        pie.setTransparentCircleColor(Color.WHITE)
-        pie.setTransparentCircleAlpha(110)
-        pie.setDrawCenterText(true)
-        pie.setHoleColor(Color.WHITE)
-        pie.centerText = generateCenterSpannableText()
+            if (expenses!!.isEmpty()) {
+                view.findViewById<TextView>(R.id.message).visibility = View.VISIBLE
+                view.findViewById<PieChart>(R.id.pie).visibility = View.GONE
+            }
+            else {
+                view.findViewById<TextView>(R.id.message).visibility = View.GONE
+                view.findViewById<PieChart>(R.id.pie).visibility = View.VISIBLE
 
-        setData()
+                // Setup Pie Chart
+                pie = view.findViewById(R.id.pie)
+                pie.description.isEnabled = false
+                pie.dragDecelerationFrictionCoef = 0.95f
+                pie.setExtraOffsets(15f, 10f, 15f, 10f)
+                pie.setUsePercentValues(true)
+                pie.rotationAngle = 0f
+                pie.isRotationEnabled = true
+                pie.isHighlightPerTapEnabled = true
+                pie.animateY(2000, Easing.EaseInOutQuad)
 
-        // Pie Chart legend
-        val legend: Legend = pie.legend
-        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-        legend.orientation = Legend.LegendOrientation.VERTICAL
-        legend.isEnabled = true
+                // Pie Chart center hole
+                pie.isDrawHoleEnabled = true
+                pie.holeRadius = 45f
+                pie.transparentCircleRadius = 47f
+                pie.setTransparentCircleColor(Color.WHITE)
+                pie.setTransparentCircleAlpha(110)
+                pie.setDrawCenterText(true)
+                pie.setHoleColor(Color.WHITE)
+                pie.centerText = generateCenterSpannableText()
 
-//                }
-//            }
-//        }
+                setData()
+
+                // Pie Chart legend
+                val legend: Legend = pie.legend
+                legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+                legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+                legend.orientation = Legend.LegendOrientation.VERTICAL
+                legend.isEnabled = true
+            }
+        }
 
         return view
     }
@@ -112,6 +110,13 @@ class DashboardFragment : Fragment() {
     }
 
     /**
+     * Asynchronously get expense data in the IO thread
+     */
+    private suspend fun getExpenseData() = withContext(Dispatchers.IO) {
+        expenseRepository.getAllExpenses()
+    }
+
+    /**
      * Sets the data for the pie chart
      */
     private fun setData() {
@@ -119,72 +124,70 @@ class DashboardFragment : Fragment() {
         val entries = mutableListOf<PieEntry>()
 
         // Grab the latest expenses
-        var expenses: List<Expense>? = null
+        var expenses: List<Expense>?
 
         uiScope.launch {
-            withContext(Dispatchers.IO) {
-                expenses = expenseRepository.getAllExpenses()
-                
-                // Colors for pie chart
-                val piggyColors = mutableListOf(
-                    ColorTemplate.rgb("#74d6e0"),
-                    ColorTemplate.rgb("#ecaaae"),
-                    ColorTemplate.rgb("#7fe1cf"),
-                    ColorTemplate.rgb("#e1b0dd"),
-                    ColorTemplate.rgb("#aad9a3"),
-                    ColorTemplate.rgb("#74aff3"),
-                    ColorTemplate.rgb("#d9da9e"),
-                    ColorTemplate.rgb("#bcb8ec"),
-                    ColorTemplate.rgb("#efb08d"),
-                    ColorTemplate.rgb("#a2bfe9"),
-                    ColorTemplate.rgb("#e3c297"),
-                    ColorTemplate.rgb("#7bcaed"),
-                    ColorTemplate.rgb("#e9bfae"),
-                    ColorTemplate.rgb("#dfc3de"),
-                    ColorTemplate.rgb("#b9d9be")
-                )
+           expenses = getExpenseData()
 
-                piggyColors.shuffle()
+            // Colors for pie chart
+            val piggyColors = mutableListOf(
+                ColorTemplate.rgb("#74d6e0"),
+                ColorTemplate.rgb("#ecaaae"),
+                ColorTemplate.rgb("#7fe1cf"),
+                ColorTemplate.rgb("#e1b0dd"),
+                ColorTemplate.rgb("#aad9a3"),
+                ColorTemplate.rgb("#74aff3"),
+                ColorTemplate.rgb("#d9da9e"),
+                ColorTemplate.rgb("#bcb8ec"),
+                ColorTemplate.rgb("#efb08d"),
+                ColorTemplate.rgb("#a2bfe9"),
+                ColorTemplate.rgb("#e3c297"),
+                ColorTemplate.rgb("#7bcaed"),
+                ColorTemplate.rgb("#e9bfae"),
+                ColorTemplate.rgb("#dfc3de"),
+                ColorTemplate.rgb("#b9d9be")
+            )
 
-                // Add each expense by category in the pie chart
-                val costPerCategory = hashMapOf<String, Double?>()
+            piggyColors.shuffle()
 
-                for (e in expenses!!) {
-                    val category = e.category
-                    val cost = e.cost
+            // Add each expense by category in the pie chart
+            val costPerCategory = hashMapOf<String, Double?>()
 
-                    if (category in costPerCategory) {
-                        costPerCategory[category] = costPerCategory[category]?.plus(cost)
-                    } else costPerCategory[category] = e.cost
-                }
+            for (e in expenses!!) {
+                val category = e.category
+                val cost = e.cost
 
-                for ((category, cost) in costPerCategory) {
-                    val label: String = "%.2f".format(cost)
-
-                    entries.add(
-                        PieEntry(cost!!.toFloat(), "$category - $label")
-                    )
-                }
-
-                // Data Set configs
-                val dataSet = PieDataSet(entries, "Expenses")
-                dataSet.sliceSpace = 3f
-                dataSet.selectionShift = 5f
-                dataSet.colors = piggyColors
-                dataSet.valueTextColor = Color.BLACK
-                dataSet.valueLinePart1OffsetPercentage = 80f
-                dataSet.valueLinePart1Length = 0.2f
-                dataSet.valueLinePart2Length = 0.4f
-                dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-
-                // Data setup
-                val data = PieData(dataSet)
-                data.setValueFormatter(PercentFormatter())
-                data.setValueTextSize(11f)
-                data.setValueTextColor(Color.BLACK)
-
-                pie.data = data
+                if (category in costPerCategory) {
+                    costPerCategory[category] = costPerCategory[category]?.plus(cost)
+                } else costPerCategory[category] = e.cost
             }
+
+            for ((category, cost) in costPerCategory) {
+                val label: String = "%.2f".format(cost)
+
+                entries.add(
+                    PieEntry(cost!!.toFloat(), "$category - $label")
+                )
+            }
+
+            // Data Set configs
+            val dataSet = PieDataSet(entries, "Expenses")
+            dataSet.sliceSpace = 3f
+            dataSet.selectionShift = 5f
+            dataSet.colors = piggyColors
+            dataSet.valueTextColor = Color.BLACK
+            dataSet.valueLinePart1OffsetPercentage = 80f
+            dataSet.valueLinePart1Length = 0.2f
+            dataSet.valueLinePart2Length = 0.4f
+            dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+
+            // Data setup
+            val data = PieData(dataSet)
+            data.setValueFormatter(PercentFormatter())
+            data.setValueTextSize(11f)
+            data.setValueTextColor(Color.BLACK)
+
+            pie.data = data
         }
     }
 
