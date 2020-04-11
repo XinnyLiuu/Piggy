@@ -30,6 +30,34 @@ class ExpenseRepository(application: Application) {
     }
 
     /**
+     * Returns all expenses for this month
+     */
+//    fun getExpensesThisMonth(): List<Expense> {
+//        val expenses = expenseDao.getAllExpenses()
+//    }
+//
+//    /**
+//     * Returns all expenses for last month
+//     */
+//    fun getExpensesLastMonth(): List<Expense> {
+//
+//    }
+//
+//    /**
+//     * Returns all expenses from the last 6 months
+//     */
+//    fun getExpensesLastSixMonths(): List<Expense> {
+//
+//    }
+//
+//    /**
+//     * Returns all expenses for the year
+//     */
+//    fun getExpensesThisYear(): List<Expense> {
+//
+//    }
+
+    /**
      * Inserts a new expense into the database
      */
     fun addExpense(expense: Expense) {

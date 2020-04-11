@@ -66,8 +66,12 @@ class SubscriptionCreateDialogFragment(
                     // Check text length
                     val name = nameField.text.toString().trim()
                     val cost = costField.text.toString().trim()
-                    val date = dateField.text.toString().trim()
+                    var date = dateField.text.toString().trim()
                     val interval = intervalField.text.toString().trim()
+
+                    // Fix date from MM/dd/yyyy to yyyy-MM-dd
+                    val times = date.split("/")
+                    date = "%s-%s-%s".format(times[2], times[0], times[1])
 
                     if (name.isEmpty() || cost.isEmpty() || date.isEmpty() || interval.isEmpty()) {
                         Toast.makeText(context, "Please complete all fields!", Toast.LENGTH_SHORT)

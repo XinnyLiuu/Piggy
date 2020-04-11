@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +15,7 @@ import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.ExpenseRepository
 import com.xl4998.piggy.utils.TimeFilters
 import kotlinx.android.synthetic.main.fragment_expenses.*
+
 
 /**
  * Fragment that displays the lists of all the user's expenses
@@ -83,7 +86,32 @@ class ExpensesFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, times)
 
         expense_time_filter.setAdapter(adapter)
-
         expense_time_filter.inputType = 0 // Disable input from time filter dropdown
+
+        // Set time filter dropdown listeners
+        expense_time_filter.onItemClickListener =
+            OnItemClickListener { parent, view, position, id ->
+                when(adapter.getItem(position)) {
+                    TimeFilters.THIS_MONTH -> {
+
+                    }
+
+                    TimeFilters.LAST_MONTH -> {
+
+                    }
+
+                    TimeFilters.PAST_SIX_MONTHS -> {
+
+                    }
+
+                    TimeFilters.PAST_YEAR -> {
+
+                    }
+
+                    TimeFilters.ALL -> {
+
+                    }
+                }
+            }
     }
 }

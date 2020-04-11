@@ -13,8 +13,6 @@ data class Expense(
     @ColumnInfo(name = "category") val category: String,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "cost") val cost: Double,
-    @ColumnInfo(name = "date") val date: String,
+    @ColumnInfo(name = "date") val date: String, // yyyy-MM-dd
     @ColumnInfo(name = "desc") val desc: String = ""
-) {
-
-}
+)

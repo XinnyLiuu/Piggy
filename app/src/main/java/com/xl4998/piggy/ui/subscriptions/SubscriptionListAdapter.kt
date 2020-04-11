@@ -45,7 +45,7 @@ class SubscriptionListAdapter(
         val subscription = subList[position]
         val viewHolder = holder as DetailViewHolder
         viewHolder.name.text = subscription.name
-        viewHolder.cost.text = "%.2f".format(subscription.cost)
+        viewHolder.cost.text = "Cost: %.2f".format(subscription.cost)
         viewHolder.date.text = String.format(
             "Next Payment - %s month(s) from %s",
             subscription.interval,

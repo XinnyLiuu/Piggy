@@ -2,6 +2,7 @@ package com.xl4998.piggy.ui.dashboard
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.opengl.Visibility
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
@@ -10,6 +11,7 @@ import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
@@ -53,6 +55,20 @@ class DashboardFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_dashboard, container, false)
 
+//        // Check the size of data
+//        uiScope.launch {
+//            withContext(Dispatchers.IO) {
+//                // Grab the latest expenses
+//                val expenses = expenseRepository.getAllExpenses()
+//
+//                if (expenses.isEmpty()) {
+//                    view.findViewById<TextView>(R.id.message).visibility = View.VISIBLE
+//                    view.findViewById<PieChart>(R.id.pie).visibility = View.GONE
+//                }
+//                else {
+//                    view.findViewById<TextView>(R.id.message).visibility = View.GONE
+//                    view.findViewById<PieChart>(R.id.pie).visibility = View.VISIBLE
+
         // Setup Pie Chart
         pie = view.findViewById(R.id.pie)
         pie.description.isEnabled = false
@@ -83,6 +99,10 @@ class DashboardFragment : Fragment() {
         legend.orientation = Legend.LegendOrientation.VERTICAL
         legend.isEnabled = true
 
+//                }
+//            }
+//        }
+
         return view
     }
 
@@ -104,7 +124,7 @@ class DashboardFragment : Fragment() {
         uiScope.launch {
             withContext(Dispatchers.IO) {
                 expenses = expenseRepository.getAllExpenses()
-
+                
                 // Colors for pie chart
                 val piggyColors = mutableListOf(
                     ColorTemplate.rgb("#74d6e0"),

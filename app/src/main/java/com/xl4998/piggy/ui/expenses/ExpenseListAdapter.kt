@@ -46,8 +46,8 @@ class ExpenseListAdapter(
         val expense = expenseList[position]
         val viewHolder = holder as DetailViewHolder
         viewHolder.name.text = expense.name
-        viewHolder.category.text = expense.category
-        viewHolder.cost.text = "%.2f".format(expense.cost)
+        viewHolder.category.text = "Category: %s".format(expense.category)
+        viewHolder.cost.text = "Cost: %.2f".format(expense.cost)
         viewHolder.date.text = "Transaction Date: %s".format(expense.date)
 
         // Prepare buttons listener

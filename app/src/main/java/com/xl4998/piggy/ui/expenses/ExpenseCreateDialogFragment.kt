@@ -86,8 +86,12 @@ class ExpenseCreateDialogFragment(
                     val category = categoryField.text.toString().trim()
                     val name = nameField.text.toString().trim()
                     val cost = costField.text.toString().trim()
-                    val date = dateField.text.toString().trim()
+                    var date = dateField.text.toString().trim()
                     val desc = descField.text.toString().trim()
+
+                    // Fix date from MM/dd/yyyy to yyyy-MM-dd
+                    val times = date.split("/")
+                    date = "%s-%s-%s".format(times[2], times[0], times[1])
 
                     if (category.isEmpty() || name.isEmpty() || cost.isEmpty() || date.isEmpty()) {
                         Toast.makeText(context, "Please complete all fields!", Toast.LENGTH_SHORT)
