@@ -6,13 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textfield.TextInputLayout
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.ExpenseRepository
 import com.xl4998.piggy.utils.TimeFilters
@@ -45,13 +42,6 @@ class ExpensesFragment : Fragment() {
         // Setup observers
         viewModel.liveAllExpenses.observe(this, Observer { expenses ->
             rvAdapter.setExpenses(expenses)
-
-            // Check if there are any expenses, if none show message and hide filter dropdown
-            if (rvAdapter.itemCount == 0) {
-                view!!.findViewById<TextInputLayout>(R.id.expense_time_filter_layout).visibility = View.GONE
-            } else {
-                view!!.findViewById<TextInputLayout>(R.id.expense_time_filter_layout).visibility = View.VISIBLE
-            }
         })
     }
 
@@ -81,6 +71,7 @@ class ExpensesFragment : Fragment() {
         // Setup listeners for button
         add_expense_button.setOnClickListener {
             createExpenseDialog.show(parentFragmentManager, "Create Expense Dialog")
+            expense_time_filter.setText("")
         }
 
         // Setup time selection dropdown
@@ -88,7 +79,7 @@ class ExpensesFragment : Fragment() {
             TimeFilters.THIS_MONTH,
             TimeFilters.LAST_MONTH,
             TimeFilters.PAST_SIX_MONTHS,
-            TimeFilters.PAST_YEAR,
+            TimeFilters.THIS_YEAR,
             TimeFilters.ALL
         )
 
@@ -99,26 +90,28 @@ class ExpensesFragment : Fragment() {
 
         // Set time filter dropdown listeners
         expense_time_filter.onItemClickListener =
-            OnItemClickListener { parent, view, position, id ->
+            OnItemClickListener { _, _, position, _ ->
                 when(adapter.getItem(position)) {
+                    // Show this month's expenses
                     TimeFilters.THIS_MONTH -> {
-
+                        viewModel.getExpensesThisMonth()
                     }
 
+                    // Show last month's expenses
                     TimeFilters.LAST_MONTH -> {
-
+                        viewModel.getExpensesLastMonth()
                     }
 
                     TimeFilters.PAST_SIX_MONTHS -> {
-
+                        viewModel.getExpensesLastSixMonths()
                     }
 
-                    TimeFilters.PAST_YEAR -> {
-
+                    TimeFilters.THIS_YEAR -> {
+                        viewModel.getExpensesThisYear()
                     }
 
                     TimeFilters.ALL -> {
-
+                        viewModel.getAllExpenses()
                     }
                 }
             }

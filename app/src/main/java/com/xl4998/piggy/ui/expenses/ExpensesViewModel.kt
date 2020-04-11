@@ -50,6 +50,58 @@ class ExpensesViewModel(
     }
 
     /**
+     * Filter for this month's expenses
+     */
+    fun getExpensesThisMonth() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                // Get this month's expenses
+                allExpenses = expenseRepository.getExpensesThisMonth()
+                liveAllExpenses.postValue(allExpenses)
+            }
+        }
+    }
+
+    /**
+     * Filter for last month's expenses
+     */
+    fun getExpensesLastMonth() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                // Get last month's expenses
+                allExpenses = expenseRepository.getExpensesLastMonth()
+                liveAllExpenses.postValue(allExpenses)
+            }
+        }
+    }
+
+    /**
+     * Filter for last six month's expenses
+     */
+    fun getExpensesLastSixMonths() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                // Get last six month's expenses
+                allExpenses = expenseRepository.getExpensesLastSixMonths()
+                liveAllExpenses.postValue(allExpenses)
+            }
+        }
+    }
+
+    /**
+     * Filter for last year's expenses
+     */
+    fun getExpensesThisYear() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                // Get last year's expenses
+                allExpenses = expenseRepository.getExpensesThisYear()
+                liveAllExpenses.postValue(allExpenses)
+            }
+        }
+    }
+
+    /**
      * Inserts a new expense into the database
      */
     fun addNewExpense(expense: Expense) {
