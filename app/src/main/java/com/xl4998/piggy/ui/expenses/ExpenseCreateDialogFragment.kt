@@ -64,13 +64,8 @@ class ExpenseCreateDialogFragment(
         val adapter = ArrayAdapter(requireContext(), R.layout.expense_category_item, categories)
         expense_category_field.setAdapter(adapter)
 
-        // Hide keyboard on category dropdown
-        expense_category_field.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, _, _, _ ->
-                val inputMethodManager =
-                    activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(parent.applicationWindowToken, 0);
-            }
+        // Disable input from category dropdown
+        expense_category_field.inputType = 0
 
         // Setup listeners for the toolbar
         toolbar.setNavigationOnClickListener { dismiss() }

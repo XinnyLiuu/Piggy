@@ -51,6 +51,9 @@ class ExpenseUpdateDialogFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Disable input from category dropdown
+        expense_category_field.inputType = 0
+
         // Grab text fields
         val categoryField = view.findViewById<TextView>(R.id.expense_category_field)
         categoryField.text = arguments!!.getString("category")
@@ -76,14 +79,6 @@ class ExpenseUpdateDialogFragment(
         )
         val adapter = ArrayAdapter(requireContext(), R.layout.expense_category_item, categories)
         expense_category_field.setAdapter(adapter)
-
-        // Hide keyboard on category dropdown
-        expense_category_field.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, _, _, _ ->
-                val inputMethodManager =
-                    activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputMethodManager.hideSoftInputFromWindow(parent.applicationWindowToken, 0);
-            }
 
         // Setup listeners for the toolbar
         toolbar.setNavigationOnClickListener { dismiss() }

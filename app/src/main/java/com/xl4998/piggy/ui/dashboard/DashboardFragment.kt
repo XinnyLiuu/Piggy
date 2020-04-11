@@ -63,7 +63,6 @@ class DashboardFragment : Fragment() {
         pie.isRotationEnabled = true
         pie.isHighlightPerTapEnabled = true
         pie.animateY(2000, Easing.EaseInOutQuad)
-//        pie.setEntryLabelColor(Color.BLACK)
 
         // Pie Chart center hole
         pie.isDrawHoleEnabled = true
