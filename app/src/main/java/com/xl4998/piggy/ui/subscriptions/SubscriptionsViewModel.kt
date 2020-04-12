@@ -31,25 +31,10 @@ class SubscriptionsViewModel(
     fun getAllSubs() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                allSubs = subscriptionRepository.getAllSubs().toMutableList()
+                allSubs = subscriptionRepository.getAllSubs()
                 liveAllSubs.postValue(allSubs)
             }
         }
-    }
-
-    /**
-     * Grab a subscription by name
-     */
-    fun getSubByName(name: String): Subscription? {
-        var sub: Subscription? = null
-
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                sub = subscriptionRepository.getSubByName(name)
-            }
-        }
-
-        return sub
     }
 
     /**
@@ -60,7 +45,7 @@ class SubscriptionsViewModel(
             withContext(Dispatchers.IO) {
                 // Add the subscription
                 subscriptionRepository.addSubscription(sub)
-                allSubs = subscriptionRepository.getAllSubs().toMutableList()
+                allSubs = subscriptionRepository.getAllSubs()
                 liveAllSubs.postValue(allSubs)
             }
         }
@@ -74,7 +59,7 @@ class SubscriptionsViewModel(
             withContext(Dispatchers.IO) {
                 // Remove the subscription
                 subscriptionRepository.removeSubscription(sub)
-                allSubs = subscriptionRepository.getAllSubs().toMutableList()
+                allSubs = subscriptionRepository.getAllSubs()
                 liveAllSubs.postValue(allSubs)
             }
         }
@@ -88,7 +73,7 @@ class SubscriptionsViewModel(
             withContext(Dispatchers.IO) {
                 // Update the subscription
                 subscriptionRepository.updateSubscription(sub, oldName)
-                allSubs = subscriptionRepository.getAllSubs().toMutableList()
+                allSubs = subscriptionRepository.getAllSubs()
                 liveAllSubs.postValue(allSubs)
             }
         }

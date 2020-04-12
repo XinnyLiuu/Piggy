@@ -1,10 +1,13 @@
 package com.xl4998.piggy.ui.expenses
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
@@ -19,7 +22,8 @@ import com.xl4998.piggy.data.db.entities.Expense
 class ExpenseListAdapter(
     private val parentFragmentManager: FragmentManager,
     private val viewModel: ExpensesViewModel,
-    private var expenseList: MutableList<Expense>
+    private var expenseList: MutableList<Expense>,
+    private val recyclerView: RecyclerView
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // Reference to each item to be generated in RecyclerView
@@ -48,7 +52,14 @@ class ExpenseListAdapter(
         viewHolder.name.text = expense.name
         viewHolder.category.text = "Category: %s".format(expense.category)
         viewHolder.cost.text = "Cost: %.2f".format(expense.cost)
-        viewHolder.date.text = "Transaction Date: %s".format(expense.date)
+
+        // Fix date to MM/dd/yyyy
+        val times = expense.date.split("-")
+        viewHolder.date.text = "Transaction Date: %s/%s/%s".format(
+            times[1],
+            times[2],
+            times[0]
+        )
 
         // Prepare buttons listener
         viewHolder.removeBtn.setOnClickListener {
@@ -81,6 +92,19 @@ class ExpenseListAdapter(
      */
     fun setExpenses(expenseList: MutableList<Expense>) {
         this.expenseList = expenseList
-        notifyDataSetChanged()
+        runLayoutAnimation(recyclerView)
+    }
+
+    /**
+     * Notify RecyclerView about data change and animate
+     */
+    private fun runLayoutAnimation(recyclerView: RecyclerView) {
+        val context: Context = recyclerView.context
+        val controller: LayoutAnimationController =
+            AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
+
+        recyclerView.layoutAnimation = controller
+        recyclerView.adapter!!.notifyDataSetChanged()
+        recyclerView.scheduleLayoutAnimation()
     }
 }

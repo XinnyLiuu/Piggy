@@ -37,6 +37,7 @@
         app:layout_constraintTop_toBottomOf="@id/expense_time_filter_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:layoutAnimation="@anim/layout_animation_fall_down"
         app:layout_constraintRight_toRightOf="parent" />
 
     <!-- FAB -->

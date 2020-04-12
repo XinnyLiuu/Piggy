@@ -1,7 +1,6 @@
 package com.xl4998.piggy.data.db
 
 import android.app.Application
-import android.util.Log
 import com.xl4998.piggy.data.db.dao.ExpenseDao
 import com.xl4998.piggy.data.db.entities.Expense
 import com.xl4998.piggy.utils.TimeHelpers.cal
@@ -24,15 +23,8 @@ class ExpenseRepository(application: Application) {
     /**
      * Returns all expenses the user has added
      */
-    fun getAllExpenses(): List<Expense> {
-        return expenseDao.getAllExpenses()
-    }
-
-    /**
-     * Returns the Expense object based on provided id
-     */
-    fun getExpenseById(id: Long): Expense {
-        return expenseDao.getExpenseById(id)
+    fun getAllExpenses(): MutableList<Expense> {
+        return expenseDao.getAllExpenses() as MutableList<Expense>
     }
 
     /**

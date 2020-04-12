@@ -31,25 +31,10 @@ class ExpensesViewModel(
     fun getAllExpenses() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                allExpenses = expenseRepository.getAllExpenses().toMutableList()
+                allExpenses = expenseRepository.getAllExpenses()
                 liveAllExpenses.postValue(allExpenses)
             }
         }
-    }
-
-    /**
-     * Grab an expense by name
-     */
-    fun getExpenseById(id: Long): Expense? {
-        var expense: Expense? = null
-
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                expense = expenseRepository.getExpenseById(id)
-            }
-        }
-
-        return expense
     }
 
     /**
@@ -112,7 +97,8 @@ class ExpensesViewModel(
             withContext(Dispatchers.IO) {
                 // Add the expense
                 expenseRepository.addExpense(expense)
-                allExpenses = expenseRepository.getAllExpenses().toMutableList()
+                allExpenses =
+                    expenseRepository.getExpensesThisMonth() // Default to show this month's list in GUI
                 liveAllExpenses.postValue(allExpenses)
             }
         }
@@ -126,7 +112,8 @@ class ExpensesViewModel(
             withContext(Dispatchers.IO) {
                 // Remove the expense
                 expenseRepository.removeExpense(expense)
-                allExpenses = expenseRepository.getAllExpenses().toMutableList()
+                allExpenses =
+                    expenseRepository.getExpensesThisMonth() // Default to show this month's list in GUI
                 liveAllExpenses.postValue(allExpenses)
             }
         }
@@ -140,7 +127,8 @@ class ExpensesViewModel(
             withContext(Dispatchers.IO) {
                 // Update the expense
                 expenseRepository.updateExpense(expense)
-                allExpenses = expenseRepository.getAllExpenses().toMutableList()
+                allExpenses =
+                    expenseRepository.getExpensesThisMonth() // Default to show this month's list in GUI
                 liveAllExpenses.postValue(allExpenses)
             }
         }

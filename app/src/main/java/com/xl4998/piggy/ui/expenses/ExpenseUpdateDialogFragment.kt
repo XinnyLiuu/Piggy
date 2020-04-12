@@ -1,6 +1,5 @@
 package com.xl4998.piggy.ui.expenses
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +12,8 @@ import androidx.fragment.app.DialogFragment
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.entities.Expense
 import com.xl4998.piggy.utils.ExpenseCategories
+import com.xl4998.piggy.utils.MaterialDatePickerDialog
 import kotlinx.android.synthetic.main.fragment_expense_create_dialog.*
-import java.util.*
 
 /**
  * A full screen dialog that will assist in updating an existing expense
@@ -48,9 +47,6 @@ class ExpenseUpdateDialogFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Disable input from category dropdown
-        expense_category_field.inputType = 0
-
         // Grab text fields
         val categoryField = view.findViewById<TextView>(R.id.expense_category_field)
         categoryField.text = arguments!!.getString("category")
@@ -58,10 +54,13 @@ class ExpenseUpdateDialogFragment(
         nameField.text = arguments!!.getString("name")
         val costField = view.findViewById<TextView>(R.id.expense_cost_field)
         costField.text = arguments!!.getString("cost")
-        val dateField = view.findViewById<TextView>(R.id.expense_date_field)
-        dateField.text = arguments!!.getString("date")
         val descField = view.findViewById<TextView>(R.id.expense_desc_field)
         descField.text = arguments!!.getString("desc")
+
+        // Prepare dates
+        val dateField = view.findViewById<TextView>(R.id.expense_date_field)
+        var times = arguments!!.getString("date")!!.split("-")
+        dateField.text = "%s/%s/%s".format(times[1], times[2], times[0])
 
         // Setup category dropdown
         val categories = listOf(
@@ -77,10 +76,13 @@ class ExpenseUpdateDialogFragment(
         val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, categories)
         expense_category_field.setAdapter(adapter)
 
+        // Disable input from category dropdown
+        expense_category_field.inputType = 0
+
         // Setup listeners for the toolbar
-        toolbar.setNavigationOnClickListener { dismiss() }
-        toolbar.title = "Edit Expense"
+        toolbar.title = "Update an Expense"
         toolbar.inflateMenu(R.menu.fragment_expense_create_menu)
+        toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.setOnMenuItemClickListener { it ->
             when (it.itemId) {
                 R.id.save_expense -> {
@@ -92,7 +94,7 @@ class ExpenseUpdateDialogFragment(
                     val desc = descField.text.toString().trim()
 
                     // Fix date from MM/dd/yyyy to yyyy-MM-dd
-                    val times = date.split("/")
+                    times = date.split("/")
                     date = "%s-%s-%s".format(times[2], times[0], times[1])
 
                     if (category.isEmpty() || name.isEmpty() || cost.isEmpty() || date.isEmpty()) {
@@ -132,30 +134,11 @@ class ExpenseUpdateDialogFragment(
 
         // Setup date picker dialog
         expense_date_field.setOnClickListener {
-            val cal: Calendar = Calendar.getInstance()
-            val m = cal.get(Calendar.MONTH)
-            val d = cal.get(Calendar.DAY_OF_MONTH)
-            val y = cal.get(Calendar.YEAR)
-
-            val picker = DatePickerDialog(
+            MaterialDatePickerDialog(
                 activity!!,
-                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                    expense_date_field.setText(
-                        String.format(
-                            "%s/%s/%s",
-                            month + 1,
-                            dayOfMonth,
-                            year
-                        )
-                    )
-                },
-                y, m, d
+                it as TextView
             )
-
-            picker.show()
         }
-
-        // TODO: https://stackoverflow.com/questions/14036674/how-to-limit-the-text-in-numbers-only-from-0-59-in-edit-text-in-android
     }
 
     override fun onStart() {

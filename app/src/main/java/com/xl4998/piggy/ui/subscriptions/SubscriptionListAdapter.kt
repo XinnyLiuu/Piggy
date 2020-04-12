@@ -1,10 +1,13 @@
 package com.xl4998.piggy.ui.subscriptions
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.LayoutAnimationController
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
@@ -19,7 +22,8 @@ import com.xl4998.piggy.data.db.entities.Subscription
 class SubscriptionListAdapter(
     private val parentFragmentManager: FragmentManager,
     private val viewModel: SubscriptionsViewModel,
-    private var subList: MutableList<Subscription>
+    private var subList: MutableList<Subscription>,
+    private val recyclerView: RecyclerView
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // Reference to each item to be generated in RecyclerView
@@ -46,10 +50,14 @@ class SubscriptionListAdapter(
         val viewHolder = holder as DetailViewHolder
         viewHolder.name.text = subscription.name
         viewHolder.cost.text = "Cost: %.2f".format(subscription.cost)
-        viewHolder.date.text = String.format(
-            "Next Payment - %s month(s) from %s",
+
+        // Fix date to MM/dd/yyyy
+        val times = subscription.dateSubscribed.split("-")
+        viewHolder.date.text = "Next Payment - %s month(s) from %s/%s/%s".format(
             subscription.interval,
-            subscription.dateSubscribed
+            times[1],
+            times[2],
+            times[0]
         ) // TODO: Calculate the actual date
 
         // Prepare buttons listener
@@ -81,6 +89,19 @@ class SubscriptionListAdapter(
      */
     fun setSubs(subList: MutableList<Subscription>) {
         this.subList = subList
-        notifyDataSetChanged()
+        runLayoutAnimation(recyclerView)
+    }
+
+    /**
+     * Notify RecyclerView about data change and animate
+     */
+    private fun runLayoutAnimation(recyclerView: RecyclerView) {
+        val context: Context = recyclerView.context
+        val controller: LayoutAnimationController =
+            AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
+
+        recyclerView.layoutAnimation = controller
+        recyclerView.adapter!!.notifyDataSetChanged()
+        recyclerView.scheduleLayoutAnimation()
     }
 }

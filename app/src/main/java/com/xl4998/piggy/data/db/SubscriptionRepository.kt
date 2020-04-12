@@ -17,15 +17,8 @@ class SubscriptionRepository(application: Application) {
     /**
      * Returns all subscriptions the user has added
      */
-    fun getAllSubs(): List<Subscription> {
-        return subscriptionDao.getAllSubs()
-    }
-
-    /**
-     * Returns the Subscription object based on provided name
-     */
-    fun getSubByName(name: String): Subscription {
-        return subscriptionDao.getSubByName(name)
+    fun getAllSubs(): MutableList<Subscription> {
+        return subscriptionDao.getAllSubs().toMutableList()
     }
 
     /**

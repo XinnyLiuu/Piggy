@@ -25,6 +25,7 @@ class ExpensesFragment : Fragment() {
     private lateinit var viewModel: ExpensesViewModel
 
     // RecyclerView
+    private lateinit var recyclerView: RecyclerView
     private lateinit var rvAdapter: ExpenseListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,14 +36,6 @@ class ExpensesFragment : Fragment() {
 
         // ViewModel
         viewModel = ExpensesViewModel(expenseRepository)
-
-        // RecyclerView adapter
-        rvAdapter = ExpenseListAdapter(parentFragmentManager, viewModel, mutableListOf())
-
-        // Setup observers
-        viewModel.liveAllExpenses.observe(this, Observer { expenses ->
-            rvAdapter.setExpenses(expenses)
-        })
     }
 
     override fun onCreateView(
@@ -53,11 +46,24 @@ class ExpensesFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_expenses, container, false)
 
         // Prepare RecyclerView
-        val recyclerView: RecyclerView = view.findViewById(R.id.expense_list)
+        recyclerView = view.findViewById(R.id.expense_list)
         recyclerView.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
+
+        // RecyclerView adapter
+        rvAdapter = ExpenseListAdapter(
+            parentFragmentManager,
+            viewModel,
+            mutableListOf(),
+            recyclerView
+        )
         recyclerView.adapter = rvAdapter
+
+        // Setup observers
+        viewModel.liveAllExpenses.observe(viewLifecycleOwner, Observer { expenses ->
+            rvAdapter.setExpenses(expenses)
+        })
 
         return view
     }
@@ -74,7 +80,6 @@ class ExpensesFragment : Fragment() {
         // Setup listeners for button
         add_expense_button.setOnClickListener {
             createExpenseDialog.show(parentFragmentManager, "Create Expense Dialog")
-            viewModel.getExpensesThisMonth()
         }
 
         // Setup time selection dropdown

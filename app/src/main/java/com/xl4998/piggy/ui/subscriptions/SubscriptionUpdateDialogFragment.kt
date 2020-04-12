@@ -1,7 +1,6 @@
 package com.xl4998.piggy.ui.subscriptions
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +11,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.entities.Subscription
+import com.xl4998.piggy.utils.MaterialDatePickerDialog
 import kotlinx.android.synthetic.main.fragment_subscription_create_dialog.*
-import java.util.*
 
 /**
  * A full screen dialog that will assist in updating an existing subscription
@@ -50,22 +49,26 @@ class SubscriptionUpdateDialogFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Get the previous primary key (name)
+        val oldName: String = arguments!!.getString("name")!!
+
         // Fill text fields with subscription details
         val nameField = view.findViewById<TextView>(R.id.sub_name_field)
         nameField.text = arguments!!.getString("name")
         val costField = view.findViewById<TextView>(R.id.sub_cost_field)
         costField.text = arguments!!.getString("cost")
-        val dateField = view.findViewById<TextView>(R.id.sub_date_field)
-        dateField.text = arguments!!.getString("date")
         val intervalField = view.findViewById<TextView>(R.id.sub_interval_field)
         intervalField.text = arguments!!.getString("interval")
 
-        val oldName: String = arguments!!.getString("name")!!
+        // Prepare dates
+        val dateField = view.findViewById<TextView>(R.id.sub_date_field)
+        var times = arguments!!.getString("date")!!.split("-")
+        dateField.text = "%s/%s/%s".format(times[1], times[2], times[0])
 
         // Setup listeners for the toolbar
-        toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.title = "Edit Subscription"
         toolbar.inflateMenu(R.menu.fragment_subscription_create_menu)
+        toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.setOnMenuItemClickListener { it ->
             when (it.itemId) {
                 R.id.save_sub -> {
@@ -76,7 +79,7 @@ class SubscriptionUpdateDialogFragment(
                     val interval = intervalField.text.toString().trim()
 
                     // Fix date from MM/dd/yyyy to yyyy-MM-dd
-                    val times = date.split("/")
+                    times = date.split("/")
                     date = "%s-%s-%s".format(times[2], times[0], times[1])
 
                     if (name.isEmpty() || cost.isEmpty() || date.isEmpty() || interval.isEmpty()) {
@@ -113,23 +116,8 @@ class SubscriptionUpdateDialogFragment(
 
         // Setup date picker dialog
         sub_date_field.setOnClickListener {
-            val cal: Calendar = Calendar.getInstance()
-            val m = cal.get(Calendar.MONTH)
-            val d = cal.get(Calendar.DAY_OF_MONTH)
-            val y = cal.get(Calendar.YEAR)
-
-            val picker = DatePickerDialog(
-                activity!!,
-                DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                    sub_date_field.setText(String.format("%s/%s/%s", month + 1, dayOfMonth, year))
-                },
-                y, m, d
-            )
-
-            picker.show()
+            MaterialDatePickerDialog(activity!!, it as TextView)
         }
-
-        // TODO: https://stackoverflow.com/questions/14036674/how-to-limit-the-text-in-numbers-only-from-0-59-in-edit-text-in-android
     }
 
     override fun onStart() {

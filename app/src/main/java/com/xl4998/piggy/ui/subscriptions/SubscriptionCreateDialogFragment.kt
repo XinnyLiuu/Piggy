@@ -1,7 +1,6 @@
 package com.xl4998.piggy.ui.subscriptions
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +11,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.entities.Subscription
+import com.xl4998.piggy.utils.MaterialDatePickerDialog
 import kotlinx.android.synthetic.main.fragment_subscription_create_dialog.*
-import java.util.*
 
 /**
  * A full screen dialog that will assist in creating a new subscription
@@ -57,9 +56,9 @@ class SubscriptionCreateDialogFragment(
         val intervalField = view.findViewById<TextView>(R.id.sub_interval_field)
 
         // Setup listeners for the toolbar
-        toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.title = "Add a Subscription"
         toolbar.inflateMenu(R.menu.fragment_subscription_create_menu)
+        toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.setOnMenuItemClickListener { it ->
             when (it.itemId) {
                 R.id.save_sub -> {
@@ -107,23 +106,8 @@ class SubscriptionCreateDialogFragment(
 
         // Setup date picker dialog
         sub_date_field.setOnClickListener {
-            val cal: Calendar = Calendar.getInstance()
-            val m = cal.get(Calendar.MONTH)
-            val d = cal.get(Calendar.DAY_OF_MONTH)
-            val y = cal.get(Calendar.YEAR)
-
-            val picker = DatePickerDialog(
-                activity!!,
-                DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                    sub_date_field.setText(String.format("%s/%s/%s", month + 1, dayOfMonth, year))
-                },
-                y, m, d
-            )
-
-            picker.show()
+            MaterialDatePickerDialog(activity!!, it as TextView)
         }
-
-        // TODO: https://stackoverflow.com/questions/14036674/how-to-limit-the-text-in-numbers-only-from-0-59-in-edit-text-in-android
     }
 
     override fun onStart() {
