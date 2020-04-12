@@ -3,7 +3,6 @@ package com.xl4998.piggy.utils.notifications
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import androidx.core.app.NotificationManagerCompat
 import com.xl4998.piggy.data.db.PiggyDatabase
 import com.xl4998.piggy.data.db.entities.Expense
 import com.xl4998.piggy.utils.constants.ExpenseCategories
@@ -28,17 +27,6 @@ class AlarmReceiver : BroadcastReceiver() {
                     val sub = db.subDao().getAllSubs().filter {
                         it.name == uniqueName
                     }.toList()[0]
-
-                    // Create notification channel
-                    val notificationHelper =
-                        NotificationHelper()
-                    notificationHelper.createNotificationChannel(
-                        context,
-                        NotificationManagerCompat.IMPORTANCE_HIGH,
-                        false,
-                        "Subscriptions",
-                        "Subscription Reminders"
-                    )
 
                     // Show notification for subscription
                     NotificationHelper().showNotification(

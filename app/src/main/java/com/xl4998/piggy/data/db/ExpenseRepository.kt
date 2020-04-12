@@ -128,6 +128,11 @@ class ExpenseRepository(application: Application) {
      * Inserts a new expense into the database
      */
     fun addExpense(expense: Expense) {
+        // Format date
+        val expenseDate = timeHelper.sdf.parse(expense.date) as Date
+        timeHelper.cal.time = expenseDate
+        expense.date = timeHelper.sdf.format(timeHelper.cal.time)
+
         return expenseDao.insert(expense)
     }
 
@@ -142,6 +147,11 @@ class ExpenseRepository(application: Application) {
      * Update an expense
      */
     fun updateExpense(expense: Expense): Int {
+        // Format date
+        val expenseDate = timeHelper.sdf.parse(expense.date) as Date
+        timeHelper.cal.time = expenseDate
+        expense.date = timeHelper.sdf.format(timeHelper.cal.time)
+
         return expenseDao.update(expense)
     }
 }

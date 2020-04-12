@@ -30,7 +30,8 @@ class SubscriptionListAdapter(
     internal class DetailViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var name: TextView = view.findViewById(R.id.sub_name)
         var cost: TextView = view.findViewById(R.id.sub_cost)
-        var date: TextView = view.findViewById(R.id.sub_due)
+        var subbedDate: TextView = view.findViewById(R.id.sub_date)
+        var dueDate: TextView = view.findViewById(R.id.sub_due)
         val removeBtn: Button = view.findViewById(R.id.sub_remove)
         val editBtn: Button = view.findViewById(R.id.sub_edit)
     }
@@ -52,9 +53,17 @@ class SubscriptionListAdapter(
         viewHolder.cost.text = "Cost: %.2f".format(subscription.cost)
 
         // Fix date to MM/dd/yyyy
-        val times = subscription.nextPaymentDate.split("-")
-        viewHolder.date.text = "Next Payment: %s/%s/%s".format(
-            times[1], times[2], times[0]
+        var times = subscription.dateSubscribed.split("-")
+        viewHolder.subbedDate.text = "Date Subscribed: %s/%s/%s".format(
+            times[1],
+            times[2],
+            times[0]
+        )
+        times = subscription.nextPaymentDate.split("-")
+        viewHolder.dueDate.text = "Next Payment: %s/%s/%s".format(
+            times[1],
+            times[2],
+            times[0]
         )
 
         // Prepare buttons listener

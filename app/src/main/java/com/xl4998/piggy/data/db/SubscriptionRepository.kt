@@ -38,9 +38,9 @@ class SubscriptionRepository(
     fun addSubscription(sub: Subscription) {
         // Calculate next payment date, set the next payment field based on the specified interval
         val subDate = timeHelper.sdf.parse(sub.dateSubscribed) as Date
+        sub.dateSubscribed = timeHelper.sdf.format(subDate)
         timeHelper.cal.time = subDate
         timeHelper.cal.add(Calendar.MONTH, sub.interval)
-
         sub.nextPaymentDate = timeHelper.sdf.format(timeHelper.cal.time)
 
         return subscriptionDao.insert(sub)
