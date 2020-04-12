@@ -1,4 +1,4 @@
-package com.xl4998.piggy.utils
+package com.xl4998.piggy.utils.notifications
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -16,7 +16,7 @@ import com.xl4998.piggy.R
  *
  * https://www.raywenderlich.com/1214490-android-notifications-tutorial-getting-started
  */
-object NotificationHelper {
+class NotificationHelper {
 
     /**
      * Creates a notification channel if the android version is > O
@@ -58,10 +58,11 @@ object NotificationHelper {
         // Create the notification
         val notificationBuilder = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(R.drawable.round_card_membership_24)
-            .setContentTitle(title) // 4
-            .setContentText(message) // 5
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT) // 7
-            .setAutoCancel(true) // 8
+            .setContentTitle(title)
+            .setContentText(message)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+            .setGroupSummary(true)
             .setGroup(channelId)
 
         // Prepare notification on click to show MainActivity

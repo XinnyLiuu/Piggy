@@ -13,7 +13,8 @@ class MaterialDatePickerDialog(
     activity: Activity,
     private val textView: TextView
 ) {
-    private val cal: Calendar = Calendar.getInstance()
+    private val timeHelper = TimeHelper()
+    private val cal: Calendar = timeHelper.cal
     private val m = cal.get(Calendar.MONTH)
     private val d = cal.get(Calendar.DAY_OF_MONTH)
     private val y = cal.get(Calendar.YEAR)
@@ -27,7 +28,7 @@ class MaterialDatePickerDialog(
             y, m, d
         )
 
-        picker.datePicker.maxDate = TimeHelper.getCurrentDateTime().time
+        picker.datePicker.maxDate = timeHelper.cal.timeInMillis
         picker.show()
     }
 }

@@ -8,7 +8,7 @@ import java.util.*
  * Helper methods for time related logic
  */
 @SuppressLint("SimpleDateFormat")
-object TimeHelper {
+class TimeHelper {
 
     var sdf: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
     var cal: Calendar = Calendar.getInstance(TimeZone.getTimeZone("America/New_York"))
@@ -18,17 +18,10 @@ object TimeHelper {
     }
 
     /**
-     * Formats a Date object to a specified format
-     */
-    fun Date.toString(format: String, locale: Locale = Locale.getDefault()): String {
-        val formatter = SimpleDateFormat(format, locale)
-        return formatter.format(this)
-    }
-
-    /**
      * Returns current time as a Date object
      */
-    fun getCurrentDateTime(): Date {
-        return Calendar.getInstance().time
+    fun getCurrentDateTimeStr(): String {
+        val currDate = cal.time
+        return sdf.format(currDate)
     }
 }

@@ -3,10 +3,7 @@ package com.xl4998.piggy.data.db
 import android.app.Application
 import com.xl4998.piggy.data.db.dao.ExpenseDao
 import com.xl4998.piggy.data.db.entities.Expense
-import com.xl4998.piggy.utils.TimeHelper.cal
-import com.xl4998.piggy.utils.TimeHelper.getCurrentDateTime
-import com.xl4998.piggy.utils.TimeHelper.sdf
-import com.xl4998.piggy.utils.TimeHelper.toString
+import com.xl4998.piggy.utils.TimeHelper
 import java.util.*
 
 /**
@@ -19,6 +16,9 @@ class ExpenseRepository(application: Application) {
     // Prepare database instance
     private val db: PiggyDatabase = PiggyDatabase.getInstance(application)
     private val expenseDao: ExpenseDao = db.expenseDao()
+
+    // TimeHelper
+    private val timeHelper = TimeHelper()
 
     /**
      * Returns all expenses the user has added
@@ -33,20 +33,20 @@ class ExpenseRepository(application: Application) {
     fun getExpensesThisMonth(): MutableList<Expense> {
         val expenses = expenseDao.getAllExpenses()
 
-        val currDateStr = getCurrentDateTime().toString("yyyy-MM-dd")
-        val currDate = sdf.parse(currDateStr)
-        cal.time = currDate!!
+        val currDateStr = timeHelper.getCurrentDateTimeStr()
+        val currDate = timeHelper.sdf.parse(currDateStr)
+        timeHelper.cal.time = currDate!!
 
         // Find all expenses whose Year and Month matches this month
-        val currMonth = cal.get(Calendar.MONTH)
-        val currYear = cal.get(Calendar.YEAR)
+        val currMonth = timeHelper.cal.get(Calendar.MONTH)
+        val currYear = timeHelper.cal.get(Calendar.YEAR)
 
         // Return all the dates whose month matches this month and year
         return expenses.filter {
-            val expenseDate = sdf.parse(it.date)
-            cal.time = expenseDate!!
-            val expenseMonth = cal.get(Calendar.MONTH)
-            val expenseYear = cal.get(Calendar.YEAR)
+            val expenseDate = timeHelper.sdf.parse(it.date)
+            timeHelper.cal.time = expenseDate!!
+            val expenseMonth = timeHelper.cal.get(Calendar.MONTH)
+            val expenseYear = timeHelper.cal.get(Calendar.YEAR)
 
             expenseMonth == currMonth && expenseYear == currYear
         }.toMutableList()
@@ -58,21 +58,21 @@ class ExpenseRepository(application: Application) {
     fun getExpensesLastMonth(): MutableList<Expense> {
         val expenses = expenseDao.getAllExpenses()
 
-        val currDateStr = getCurrentDateTime().toString("yyyy-MM-dd")
-        val currDate = sdf.parse(currDateStr)
-        cal.time = currDate!!
+        val currDateStr = timeHelper.getCurrentDateTimeStr()
+        val currDate = timeHelper.sdf.parse(currDateStr)
+        timeHelper.cal.time = currDate!!
 
         // Find all expenses whose Year and Month matches last month
-        cal.add(Calendar.MONTH, -1)
-        val lastMonth = cal.get(Calendar.MONTH)
-        val lastMonthYear = cal.get(Calendar.YEAR)
+        timeHelper.cal.add(Calendar.MONTH, -1)
+        val lastMonth = timeHelper.cal.get(Calendar.MONTH)
+        val lastMonthYear = timeHelper.cal.get(Calendar.YEAR)
 
         // Return all the dates whose month matches last month
         return expenses.filter {
-            val expenseDate = sdf.parse(it.date)
-            cal.time = expenseDate!!
-            val expenseMonth = cal.get(Calendar.MONTH)
-            val expenseYear = cal.get(Calendar.YEAR)
+            val expenseDate = timeHelper.sdf.parse(it.date)
+            timeHelper.cal.time = expenseDate!!
+            val expenseMonth = timeHelper.cal.get(Calendar.MONTH)
+            val expenseYear = timeHelper.cal.get(Calendar.YEAR)
 
             expenseMonth == lastMonth && expenseYear == lastMonthYear
         }.toMutableList()
@@ -84,18 +84,18 @@ class ExpenseRepository(application: Application) {
     fun getExpensesLastSixMonths(): MutableList<Expense> {
         val expenses = expenseDao.getAllExpenses()
 
-        val currDateStr = getCurrentDateTime().toString("yyyy-MM-dd")
+        val currDateStr = timeHelper.getCurrentDateTimeStr()
 
         // Find all expenses whose Year and Month matches last 6 months
-        val currDate = sdf.parse(currDateStr)
+        val currDate = timeHelper.sdf.parse(currDateStr)
 
-        cal.time = currDate!!
-        cal.add(Calendar.MONTH, -6)
-        val sixMonthsAgoDate = cal.time
+        timeHelper.cal.time = currDate!!
+        timeHelper.cal.add(Calendar.MONTH, -6)
+        val sixMonthsAgoDate = timeHelper.cal.time
 
         // Return all the dates whose month matches last 6 months month
         return expenses.filter {
-            val expenseDate = sdf.parse(it.date)
+            val expenseDate = timeHelper.sdf.parse(it.date)
 
             !expenseDate!!.before(sixMonthsAgoDate) && !expenseDate.after(currDate)
         }.toMutableList()
@@ -107,18 +107,18 @@ class ExpenseRepository(application: Application) {
     fun getExpensesThisYear(): MutableList<Expense> {
         val expenses = expenseDao.getAllExpenses()
 
-        val currDateStr = getCurrentDateTime().toString("yyyy-MM-dd")
-        val currDate = sdf.parse(currDateStr)
-        cal.time = currDate!!
+        val currDateStr = timeHelper.getCurrentDateTimeStr()
+        val currDate = timeHelper.sdf.parse(currDateStr)
+        timeHelper.cal.time = currDate!!
 
         // Find all expenses whose Year and Month matches this year
-        val currYear = cal.get(Calendar.YEAR)
+        val currYear = timeHelper.cal.get(Calendar.YEAR)
 
         // Return all the dates whose month matches this month
         return expenses.filter {
-            val expenseDate = sdf.parse(it.date)
-            cal.time = expenseDate!!
-            val expenseYear = cal.get(Calendar.YEAR)
+            val expenseDate = timeHelper.sdf.parse(it.date)
+            timeHelper.cal.time = expenseDate!!
+            val expenseYear = timeHelper.cal.get(Calendar.YEAR)
 
             expenseYear == currYear
         }.toMutableList()
