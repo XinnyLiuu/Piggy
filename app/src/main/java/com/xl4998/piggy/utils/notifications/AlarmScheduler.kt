@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.xl4998.piggy.data.db.entities.Subscription
 import java.util.*
 
@@ -32,13 +33,15 @@ class AlarmScheduler {
         alarmIntent: PendingIntent,
         sub: Subscription
     ) {
+        Log.v("Scheduling Alarm", sub.name)
+
         // TODO: Calculate the time based on the user provided intervals
 
         // Prepare the time to start notify
         val datetimeToAlarm = Calendar.getInstance(Locale.getDefault())
         datetimeToAlarm.timeInMillis = System.currentTimeMillis()
-        datetimeToAlarm.set(Calendar.HOUR_OF_DAY, 15)
-        datetimeToAlarm.set(Calendar.MINUTE, 56)
+        datetimeToAlarm.set(Calendar.HOUR_OF_DAY, 18)
+        datetimeToAlarm.set(Calendar.MINUTE, 30)
 
         // Set repeating alarms
         alarmManager.setRepeating(

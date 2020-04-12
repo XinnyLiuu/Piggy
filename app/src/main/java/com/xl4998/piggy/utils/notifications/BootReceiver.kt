@@ -23,7 +23,7 @@ class BootReceiver : BroadcastReceiver() {
             // Show toast to signal this is working
             Toast.makeText(
                 context,
-                "Piggy is preparing scheduled reminders",
+                "Piggy is preparing subscription reminders",
                 Toast.LENGTH_LONG
             ).show()
 

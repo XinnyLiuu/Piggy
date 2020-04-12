@@ -10,7 +10,9 @@ import java.util.*
  *
  * TODO: Handle exceptions
  */
-class SubscriptionRepository(application: Application) {
+class SubscriptionRepository(
+    val application: Application
+) {
 
     // Prepare database instance
     private val db: PiggyDatabase = PiggyDatabase.getInstance(application)
@@ -24,6 +26,10 @@ class SubscriptionRepository(application: Application) {
      */
     fun getAllSubs(): MutableList<Subscription> {
         return subscriptionDao.getAllSubs().toMutableList()
+    }
+
+    fun getSubByName(name: String): Subscription {
+        return subscriptionDao.getSubByName(name)
     }
 
     /**
