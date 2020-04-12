@@ -52,18 +52,18 @@ class SubscriptionsViewModel(
                 allSubs = subscriptionRepository.getAllSubs()
                 liveAllSubs.postValue(allSubs)
 
-                // Get the new sub
-                val newSub = subscriptionRepository.getSubByName(sub.name)
-
-                // Set an alarm to notify about the subscription payment date a week before
-                val alarmScheduler = AlarmScheduler()
-                val scheduledAlarm = alarmScheduler.createPendingIntent(
-                    subscriptionRepository.application,
-                    newSub
-                ) as PendingIntent
-                val alarmManager =
-                    subscriptionRepository.application.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                alarmScheduler.scheduleAlarm(alarmManager, scheduledAlarm, newSub)
+//                // Get the new sub
+//                val newSub = subscriptionRepository.getSubByName(sub.name)
+//
+//                // Set an alarm to notify about the subscription payment date a week before
+//                val alarmScheduler = AlarmScheduler()
+//                val scheduledAlarm = alarmScheduler.createPendingIntent(
+//                    subscriptionRepository.application,
+//                    newSub
+//                ) as PendingIntent
+//                val alarmManager =
+//                    subscriptionRepository.application.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//                alarmScheduler.scheduleAlarm(alarmManager, scheduledAlarm, newSub)
             }
         }
     }
@@ -93,18 +93,18 @@ class SubscriptionsViewModel(
                 allSubs = subscriptionRepository.getAllSubs()
                 liveAllSubs.postValue(allSubs)
 
-                // Get the updated sub
-                val updatedSub = subscriptionRepository.getSubByName(sub.name)
-
-                // Set an alarm to notify about the subscription payment date a week before
-                val alarmScheduler = AlarmScheduler()
-                val scheduledAlarm = alarmScheduler.createPendingIntent(
-                    subscriptionRepository.application,
-                    updatedSub
-                ) as PendingIntent
-                val alarmManager =
-                    subscriptionRepository.application.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                alarmScheduler.scheduleAlarm(alarmManager, scheduledAlarm, updatedSub)
+//                // Get the updated sub
+//                val updatedSub = subscriptionRepository.getSubByName(sub.name)
+//
+//                // Set an alarm to notify about the subscription payment date a week before
+//                val alarmScheduler = AlarmScheduler()
+//                val scheduledAlarm = alarmScheduler.createPendingIntent(
+//                    subscriptionRepository.application,
+//                    updatedSub
+//                ) as PendingIntent
+//                val alarmManager =
+//                    subscriptionRepository.application.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//                alarmScheduler.scheduleAlarm(alarmManager, scheduledAlarm, updatedSub)
             }
         }
     }

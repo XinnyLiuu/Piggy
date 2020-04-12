@@ -17,9 +17,6 @@ class ExpenseRepository(application: Application) {
     private val db: PiggyDatabase = PiggyDatabase.getInstance(application)
     private val expenseDao: ExpenseDao = db.expenseDao()
 
-    // TimeHelper
-    private val timeHelper = TimeHelper()
-
     /**
      * Returns all expenses the user has added
      */
@@ -31,8 +28,13 @@ class ExpenseRepository(application: Application) {
      * Returns all expenses for this month
      */
     fun getExpensesThisMonth(): MutableList<Expense> {
+        // TimeHelper
+        val timeHelper = TimeHelper()
+
+        // Get all expenses
         val expenses = expenseDao.getAllExpenses()
 
+        // Set curr dates
         val currDateStr = timeHelper.getCurrentDateTimeStr()
         val currDate = timeHelper.sdf.parse(currDateStr)
         timeHelper.cal.time = currDate!!
@@ -56,8 +58,13 @@ class ExpenseRepository(application: Application) {
      * Returns all expenses for last month
      */
     fun getExpensesLastMonth(): MutableList<Expense> {
+        // TimeHelper
+        val timeHelper = TimeHelper()
+
+        // Get all expenses
         val expenses = expenseDao.getAllExpenses()
 
+        // Set curr dates
         val currDateStr = timeHelper.getCurrentDateTimeStr()
         val currDate = timeHelper.sdf.parse(currDateStr)
         timeHelper.cal.time = currDate!!
@@ -82,8 +89,13 @@ class ExpenseRepository(application: Application) {
      * Returns all expenses from the last 6 months
      */
     fun getExpensesLastSixMonths(): MutableList<Expense> {
+        // TimeHelper
+        val timeHelper = TimeHelper()
+
+        // Get all expenses
         val expenses = expenseDao.getAllExpenses()
 
+        // Set curr dates
         val currDateStr = timeHelper.getCurrentDateTimeStr()
 
         // Find all expenses whose Year and Month matches last 6 months
@@ -105,8 +117,13 @@ class ExpenseRepository(application: Application) {
      * Returns all expenses for the year
      */
     fun getExpensesThisYear(): MutableList<Expense> {
+        // TimeHelper
+        val timeHelper = TimeHelper()
+
+        // Get all expenses
         val expenses = expenseDao.getAllExpenses()
 
+        // Set curr dates
         val currDateStr = timeHelper.getCurrentDateTimeStr()
         val currDate = timeHelper.sdf.parse(currDateStr)
         timeHelper.cal.time = currDate!!
@@ -128,6 +145,9 @@ class ExpenseRepository(application: Application) {
      * Inserts a new expense into the database
      */
     fun addExpense(expense: Expense) {
+        // TimeHelper
+        val timeHelper = TimeHelper()
+
         // Format date
         val expenseDate = timeHelper.sdf.parse(expense.date) as Date
         timeHelper.cal.time = expenseDate
@@ -147,6 +167,9 @@ class ExpenseRepository(application: Application) {
      * Update an expense
      */
     fun updateExpense(expense: Expense): Int {
+        // TimeHelper
+        val timeHelper = TimeHelper()
+
         // Format date
         val expenseDate = timeHelper.sdf.parse(expense.date) as Date
         timeHelper.cal.time = expenseDate

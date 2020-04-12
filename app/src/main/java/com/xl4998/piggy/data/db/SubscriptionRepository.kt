@@ -11,15 +11,12 @@ import java.util.*
  * TODO: Handle exceptions
  */
 class SubscriptionRepository(
-    val application: Application
+    application: Application
 ) {
 
     // Prepare database instance
     private val db: PiggyDatabase = PiggyDatabase.getInstance(application)
     private val subscriptionDao = db.subDao()
-
-    // TimeHelper
-    private val timeHelper = TimeHelper()
 
     /**
      * Returns all subscriptions the user has added
@@ -36,11 +33,25 @@ class SubscriptionRepository(
      * Inserts a new subscription into the database
      */
     fun addSubscription(sub: Subscription) {
-        // Calculate next payment date, set the next payment field based on the specified interval
-        val subDate = timeHelper.sdf.parse(sub.dateSubscribed) as Date
+        // TimeHelper
+        val timeHelper = TimeHelper()
+
+        // Check if the subbed date is less the current date, if so we are going to calculate the next payment date based on the given interval to find the next closest possible date after the curr date
+        val currDate = timeHelper.cal.time
+        var subDate = timeHelper.sdf.parse(sub.dateSubscribed) as Date
         sub.dateSubscribed = timeHelper.sdf.format(subDate)
+
         timeHelper.cal.time = subDate
-        timeHelper.cal.add(Calendar.MONTH, sub.interval)
+
+        if (subDate.before(currDate)) {
+            while(subDate.before(currDate)) {
+                timeHelper.cal.add(Calendar.MONTH, sub.interval)
+                subDate = timeHelper.cal.time
+            }
+        } else {
+            timeHelper.cal.add(Calendar.MONTH, sub.interval)
+        }
+
         sub.nextPaymentDate = timeHelper.sdf.format(timeHelper.cal.time)
 
         return subscriptionDao.insert(sub)
@@ -57,10 +68,24 @@ class SubscriptionRepository(
      * Update a subscription
      */
     fun updateSubscription(sub: Subscription, oldName: String): Int {
-        // Calculate next payment date, set the next payment field based on the specified interval
-        val subDate = timeHelper.sdf.parse(sub.dateSubscribed) as Date
+        // TimeHelper
+        val timeHelper = TimeHelper()
+
+        // Check if the subbed date is less the current date, if so we are going to calculate the next payment date based on the given interval to find the next closest possible date after the curr date
+        val currDate = timeHelper.cal.time
+        var subDate = timeHelper.sdf.parse(sub.dateSubscribed) as Date
+        sub.dateSubscribed = timeHelper.sdf.format(subDate)
+
         timeHelper.cal.time = subDate
-        timeHelper.cal.add(Calendar.MONTH, sub.interval)
+
+        if (subDate.before(currDate)) {
+            while(subDate.before(currDate)) {
+                timeHelper.cal.add(Calendar.MONTH, sub.interval)
+                subDate = timeHelper.cal.time
+            }
+        } else {
+            timeHelper.cal.add(Calendar.MONTH, sub.interval)
+        }
 
         sub.nextPaymentDate = timeHelper.sdf.format(timeHelper.cal.time)
 
