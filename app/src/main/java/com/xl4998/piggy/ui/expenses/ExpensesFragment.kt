@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.ExpenseRepository
-import com.xl4998.piggy.utils.TimeFilters
+import com.xl4998.piggy.utils.constants.TimeFilters
 import kotlinx.android.synthetic.main.fragment_expenses.*
 
 

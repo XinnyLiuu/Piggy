@@ -1,4 +1,4 @@
-package com.xl4998.piggy.utils
+package com.xl4998.piggy.utils.constants
 
 /**
  * Categories choices for all expenses inputted into Piggy

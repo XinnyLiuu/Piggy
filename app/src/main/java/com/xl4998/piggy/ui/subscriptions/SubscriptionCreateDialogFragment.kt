@@ -11,7 +11,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.entities.Subscription
-import com.xl4998.piggy.utils.MaterialDatePickerDialog
+import com.xl4998.piggy.ui.MaterialDatePickerDialog
 import kotlinx.android.synthetic.main.fragment_subscription_create_dialog.*
 
 /**
@@ -106,7 +106,10 @@ class SubscriptionCreateDialogFragment(
 
         // Setup date picker dialog
         sub_date_field.setOnClickListener {
-            MaterialDatePickerDialog(activity!!, it as TextView)
+            MaterialDatePickerDialog(
+                activity!!,
+                it as TextView
+            )
         }
     }
 

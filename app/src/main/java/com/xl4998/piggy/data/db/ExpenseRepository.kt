@@ -3,10 +3,10 @@ package com.xl4998.piggy.data.db
 import android.app.Application
 import com.xl4998.piggy.data.db.dao.ExpenseDao
 import com.xl4998.piggy.data.db.entities.Expense
-import com.xl4998.piggy.utils.TimeHelpers.cal
-import com.xl4998.piggy.utils.TimeHelpers.getCurrentDateTime
-import com.xl4998.piggy.utils.TimeHelpers.sdf
-import com.xl4998.piggy.utils.TimeHelpers.toString
+import com.xl4998.piggy.utils.TimeHelper.cal
+import com.xl4998.piggy.utils.TimeHelper.getCurrentDateTime
+import com.xl4998.piggy.utils.TimeHelper.sdf
+import com.xl4998.piggy.utils.TimeHelper.toString
 import java.util.*
 
 /**

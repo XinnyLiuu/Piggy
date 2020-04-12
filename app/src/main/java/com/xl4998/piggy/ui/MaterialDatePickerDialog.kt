@@ -1,12 +1,16 @@
-package com.xl4998.piggy.utils
+package com.xl4998.piggy.ui
 
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.widget.TextView
+import com.xl4998.piggy.utils.TimeHelper
 import java.util.*
 
+/**
+ * Custom class to show a DatePickerDialog
+ */
 class MaterialDatePickerDialog(
-    private val activity: Activity,
+    activity: Activity,
     private val textView: TextView
 ) {
     private val cal: Calendar = Calendar.getInstance()
@@ -23,7 +27,7 @@ class MaterialDatePickerDialog(
             y, m, d
         )
 
-        picker.datePicker.maxDate = TimeHelpers.getCurrentDateTime().time
+        picker.datePicker.maxDate = TimeHelper.getCurrentDateTime().time
         picker.show()
     }
 }

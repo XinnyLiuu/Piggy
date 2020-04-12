@@ -8,7 +8,7 @@ import java.util.*
  * Helper methods for time related logic
  */
 @SuppressLint("SimpleDateFormat")
-object TimeHelpers {
+object TimeHelper {
 
     var sdf: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
     var cal: Calendar = Calendar.getInstance(TimeZone.getTimeZone("America/New_York"))

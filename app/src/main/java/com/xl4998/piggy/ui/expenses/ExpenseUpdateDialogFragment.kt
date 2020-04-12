@@ -11,8 +11,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.entities.Expense
-import com.xl4998.piggy.utils.ExpenseCategories
-import com.xl4998.piggy.utils.MaterialDatePickerDialog
+import com.xl4998.piggy.ui.MaterialDatePickerDialog
+import com.xl4998.piggy.utils.constants.ExpenseCategories
 import kotlinx.android.synthetic.main.fragment_expense_create_dialog.*
 
 /**
