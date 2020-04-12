@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.ExpenseRepository
 import com.xl4998.piggy.utils.TimeFilters
@@ -77,10 +78,24 @@ class ExpensesFragment : Fragment() {
         // Prepare dialog fragment
         val createExpenseDialog = ExpenseCreateDialogFragment(viewModel)
 
-        // Setup listeners for button
         add_expense_button.setOnClickListener {
             createExpenseDialog.show(parentFragmentManager, "Create Expense Dialog")
         }
+
+        // FAB on scroll
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            val fab = view.findViewById<ExtendedFloatingActionButton>(R.id.add_expense_button)
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    fab.hide()
+                } else {
+                    fab.show()
+                }
+
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
 
         // Setup time selection dropdown
         val times = listOf(
@@ -96,8 +111,6 @@ class ExpensesFragment : Fragment() {
         expense_time_filter.setAdapter(adapter)
         expense_time_filter.inputType = 0 // Disable input from time filter dropdown
         expense_time_filter.setText(expense_time_filter.adapter.getItem(0).toString(), false)
-
-        // Set time filter dropdown listeners
         expense_time_filter.onItemClickListener =
             OnItemClickListener { _, _, position, _ ->
                 when(adapter.getItem(position)) {

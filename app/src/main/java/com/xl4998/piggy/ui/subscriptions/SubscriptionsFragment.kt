@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.xl4998.piggy.R
 import com.xl4998.piggy.data.db.SubscriptionRepository
 import kotlinx.android.synthetic.main.fragment_subscriptions.*
@@ -70,9 +71,23 @@ class SubscriptionsFragment : Fragment() {
         // Prepare dialog fragment
         val createSubDialog = SubscriptionCreateDialogFragment(viewModel)
 
-        // Setup listeners for button
         add_sub_button.setOnClickListener {
             createSubDialog.show(parentFragmentManager, "Create Sub Dialog")
         }
+
+        // FAB on scroll
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            val fab = view.findViewById<ExtendedFloatingActionButton>(R.id.add_sub_button)
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    fab.hide()
+                } else {
+                    fab.show()
+                }
+
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
     }
 }
