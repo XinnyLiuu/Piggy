@@ -16,7 +16,6 @@ class AlarmScheduler {
         context: Context,
         sub: Subscription
     ): PendingIntent? {
-
         // Create the intent
         val intent = Intent(context.applicationContext, AlarmReceiver::class.java)
             .setAction("Subscription Reminder")

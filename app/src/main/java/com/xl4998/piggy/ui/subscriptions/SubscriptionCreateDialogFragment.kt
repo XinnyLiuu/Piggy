@@ -72,8 +72,8 @@ class SubscriptionCreateDialogFragment(
                     val times = date.split("/")
                     date = "%s-%s-%s".format(times[2], times[0], times[1])
 
-                    if (name.isEmpty() || cost.isEmpty() || date.isEmpty() || interval.isEmpty()) {
-                        Toast.makeText(context, "Please complete all fields!", Toast.LENGTH_SHORT)
+                    if (name.isEmpty() || cost.isEmpty() || date.isEmpty() || interval.isEmpty() || interval.toInt() == 0) {
+                        Toast.makeText(context, "Please complete all fields are valid!", Toast.LENGTH_SHORT)
                             .show()
                     } else {
                         // Create subscription

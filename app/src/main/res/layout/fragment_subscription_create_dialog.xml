@@ -102,8 +102,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sub_date_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_marginBottom="300dp"
-            app:helperText="1 - Monthly, 2 - Bi-monthly, etc">
+            android:layout_marginBottom="250dp"
+            app:helperText="1 - Monthly, 2 - Bi-monthly, etc. \n \nAll subscriptions will notify you a week before the next payment is due.">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/sub_interval_field"
