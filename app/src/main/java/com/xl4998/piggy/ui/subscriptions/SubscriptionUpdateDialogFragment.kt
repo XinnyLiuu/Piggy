@@ -91,7 +91,8 @@ class SubscriptionUpdateDialogFragment(
                             name.capitalize(),
                             "%.2f".format(cost.toDouble()).toDouble(),
                             date,
-                            interval.toInt()
+                            interval.toInt(),
+                            ""
                         )
 
                         // Update subscription list view

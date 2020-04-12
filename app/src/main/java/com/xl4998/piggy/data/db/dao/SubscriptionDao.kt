@@ -15,12 +15,13 @@ interface SubscriptionDao : BaseDao<Subscription> {
     @Query("select * from subscriptions where name = :name")
     fun getSubByName(name: String): Subscription
 
-    @Query("update subscriptions set name = :newName, cost = :cost, date_subscribed = :date, interval = :interval where name = :oldName")
+    @Query("update subscriptions set name = :newName, cost = :cost, date_subscribed = :date, interval = :interval, next_payment_date = :nextPayment where name = :oldName")
     fun updateByName(
         newName: String,
         oldName: String,
         cost: Double,
         date: String,
-        interval: Int
+        interval: Int,
+        nextPayment: String
     ): Int
 }

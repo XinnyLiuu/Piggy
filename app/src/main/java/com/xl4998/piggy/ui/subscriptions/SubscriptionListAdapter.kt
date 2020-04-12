@@ -52,13 +52,10 @@ class SubscriptionListAdapter(
         viewHolder.cost.text = "Cost: %.2f".format(subscription.cost)
 
         // Fix date to MM/dd/yyyy
-        val times = subscription.dateSubscribed.split("-")
-        viewHolder.date.text = "Next Payment - %s month(s) from %s/%s/%s".format(
-            subscription.interval,
-            times[1],
-            times[2],
-            times[0]
-        ) // TODO: Calculate the actual date
+        val times = subscription.nextPaymentDate.split("-")
+        viewHolder.date.text = "Next Payment: %s/%s/%s".format(
+            times[1], times[2], times[0]
+        )
 
         // Prepare buttons listener
         viewHolder.removeBtn.setOnClickListener {

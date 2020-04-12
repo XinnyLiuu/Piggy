@@ -11,6 +11,7 @@ import androidx.room.PrimaryKey
 data class Subscription(
     @PrimaryKey @ColumnInfo(name = "name") var name: String,
     @ColumnInfo(name = "cost") var cost: Double,
-    @ColumnInfo(name = "date_subscribed") var dateSubscribed: String, //// yyyy-MM-dd
-    @ColumnInfo(name = "interval") var interval: Int // Interval should be used to recur expenses
+    @ColumnInfo(name = "date_subscribed") var dateSubscribed: String, // yyyy-MM-dd
+    @ColumnInfo(name = "interval") var interval: Int, // Interval should be used to recur expenses
+    @ColumnInfo(name = "next_payment_date") var nextPaymentDate: String // yyyy-MM-dd
 )
