@@ -1,10 +1,14 @@
 package com.xl4998.piggy.utils.notifications
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.xl4998.piggy.data.db.PiggyDatabase
+import com.xl4998.piggy.data.db.SubscriptionRepository
 import com.xl4998.piggy.data.db.entities.Expense
+import com.xl4998.piggy.utils.TimeHelper
 import com.xl4998.piggy.utils.constants.ExpenseCategories
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -33,23 +37,49 @@ class AlarmReceiver : BroadcastReceiver() {
                         context,
                         "%s Subscription Reminder".format(sub.name),
                         "The payment for %s is due on %s".format(sub.name, sub.nextPaymentDate),
-                        sub.cost.toInt()
+                        TimeHelper().getNotificationUniqueID()
                     )
+                }
+            }
+        }
 
-                    // Add the subscription as an expense
-                    val expense = Expense(
-                        null,
-                        ExpenseCategories.SUBSCRIPTION,
-                        sub.name,
-                        sub.cost,
-                        sub.nextPaymentDate,
-                        ""
-                    )
+        if (intent.action!! == "Subscription Update") {
 
-                    db.expenseDao().insert(expense)
+            // Get the name stored in intent
+            val uniqueName = intent.extras!!.getString("name")
 
-//                    // Update subscription's next payment date
-//                    sub.nextPaymentDate
+            GlobalScope.launch {
+                withContext(Dispatchers.IO) {
+                    val db: PiggyDatabase = PiggyDatabase.getInstance(context!!.applicationContext)
+
+                    // Get the subscription
+                    var sub = db.subDao().getAllSubs().filter {
+                        it.name == uniqueName
+                    }.toList()[0]
+
+                    // Update the subscription which will update the next payment date as well
+                    sub = SubscriptionRepository.prepareSub(sub)
+
+                    // TODO: Hardcode fake sub name
+                    sub.name = "UPDATED!!!"
+
+                    // Prepare new intents
+                    val alarmScheduler = AlarmScheduler()
+                    val alarmManager = context.applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+                    // Delete old pending intents
+                    var pendingIntent: PendingIntent = alarmScheduler.createSubReminderIntent(context.applicationContext, sub) as PendingIntent
+                    pendingIntent.cancel()
+                    pendingIntent = alarmScheduler.createSubUpdateIntent(context.applicationContext, sub)
+                    pendingIntent.cancel()
+
+                    // Set an alarm to notify about the subscription payment date a week before
+                    pendingIntent = alarmScheduler.createSubReminderIntent(context.applicationContext, sub) as PendingIntent
+                    alarmScheduler.scheduleAlarmOneWeekBeforeSubDate(alarmManager, pendingIntent, sub)
+
+                    // Set an alarm to update the subscription payment date on the day of the payment
+                    pendingIntent = alarmScheduler.createSubUpdateIntent(context.applicationContext, sub)
+                    alarmScheduler.scheduleAlarmDayOfSubDate(alarmManager, pendingIntent, sub)
                 }
             }
         }

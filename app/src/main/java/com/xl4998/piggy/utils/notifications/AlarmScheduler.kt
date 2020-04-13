@@ -5,46 +5,89 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.xl4998.piggy.data.db.entities.Subscription
+import com.xl4998.piggy.utils.TimeHelper
 import java.util.*
 
 class AlarmScheduler {
 
     /**
-     * Creates pending intent with subscription related data
+     * Creates pending intent for upcoming subscription payment
      */
-    fun createPendingIntent(
+    fun createSubReminderIntent(
         context: Context,
         sub: Subscription
     ): PendingIntent? {
         // Create the intent
         val intent = Intent(context.applicationContext, AlarmReceiver::class.java)
             .setAction("Subscription Reminder")
+            .setType("%s Payment Reminder".format(sub.name))
             .putExtra("name", sub.name)
 
         return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
     /**
-     * Schedule the alarm
+     * Creates pending intent to update a subscription payment date
      */
-    fun scheduleAlarm(
+    fun createSubUpdateIntent(
+        context: Context,
+        sub: Subscription
+    ): PendingIntent {
+        // Create the intent
+        val intent = Intent(context.applicationContext, AlarmReceiver::class.java)
+            .setAction("Subscription Update")
+            .setType("%s Update".format(sub.name))
+            .putExtra("name", sub.name)
+
+        return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    /**
+     * Schedule the alarm one week before the due date
+     */
+    fun scheduleAlarmOneWeekBeforeSubDate(
         alarmManager: AlarmManager,
         alarmIntent: PendingIntent,
         sub: Subscription
     ) {
-        // TODO: Calculate the time based on the user provided intervals
+        // TimeHelper
+        val timeHelper = TimeHelper()
 
         // Prepare the time to start notify
-        val datetimeToAlarm = Calendar.getInstance(Locale.getDefault())
-        datetimeToAlarm.timeInMillis = System.currentTimeMillis()
-        datetimeToAlarm.set(Calendar.HOUR_OF_DAY, 19)
-        datetimeToAlarm.set(Calendar.MINUTE, 12)
+//        val subPaymentDate = timeHelper.sdf.parse(sub.nextPaymentDate) as Date
+        val subPaymentDate = timeHelper.sdf.parse(sub.dateSubscribed) as Date // TODO: For testing - set payment as sub date of the future
+        timeHelper.cal.time = subPaymentDate
+//        timeHelper.cal.add(Calendar.DAY_OF_MONTH, -7) // Set time of start to 7 days before
+        timeHelper.cal.add(Calendar.DAY_OF_MONTH, -1) // TODO: For testing - Set time of start to 1 days before
 
-        // Set repeating alarms
-        alarmManager.setRepeating(
+        // Set alarm
+        alarmManager.set(
             AlarmManager.RTC_WAKEUP, // Fire pending intent
-            datetimeToAlarm.timeInMillis, // Alarm start
-            (1000 * 60 * 60 * 24 * 7).toLong(), // Repeats every 7 days
+            timeHelper.cal.time.time, // Alarm start
+            alarmIntent // Pending intent
+        )
+    }
+
+    /**
+     * Schedule the alarm on the due date
+     */
+    fun scheduleAlarmDayOfSubDate(
+        alarmManager: AlarmManager,
+        alarmIntent: PendingIntent,
+        sub: Subscription
+    ) {
+        // TimeHelper
+        val timeHelper = TimeHelper()
+
+        // Prepare the time to start notify
+//        val subPaymentDate = timeHelper.sdf.parse(sub.nextPaymentDate) as Date
+        val subPaymentDate = timeHelper.sdf.parse(sub.dateSubscribed) as Date // TODO: For testing - set payment as sub date of the future
+        timeHelper.cal.time = subPaymentDate
+
+        // Set alarm
+        alarmManager.set(
+            AlarmManager.RTC_WAKEUP, // Fire pending intent
+            timeHelper.cal.time.time, // Alarm start
             alarmIntent // Pending intent
         )
     }

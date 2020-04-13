@@ -16,4 +16,16 @@
     <string name="subscription_due">Subscription Due</string>
     <string name="remove">remove</string>
     <string name="edit">edit</string>
+    <string name="expense_name">Expense Name</string>
+    <string name="expense_category">Expense Category</string>
+    <string name="expense_cost">Expense Cost</string>
+    <string name="expense_date">Expense Date</string>
+    <string name="filter_by_time">Filter by Time</string>
+    <string name="category">Category</string>
+    <string name="name">Name</string>
+    <string name="cost">Cost</string>
+    <string name="date_of_transaction">Date of Transaction</string>
+    <string name="description">Description</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="subscription_date">Subscription Date</string>
 </resources>

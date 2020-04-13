@@ -45,20 +45,20 @@ class BootReceiver : BroadcastReceiver() {
                         "Subscription Reminders"
                     )
 
-                    // Check the size of subs, if there are none, do not schedule notifications
-                    if (subs.isNotEmpty()) {
-                        val alarmScheduler =
-                            AlarmScheduler()
-
-                        // Schedule notification reminders for subscriptions
-                        for (sub in subs) {
-                            val scheduledAlarm =
-                                alarmScheduler.createPendingIntent(context, sub) as PendingIntent
-                            val alarmManager =
-                                context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                            alarmScheduler.scheduleAlarm(alarmManager, scheduledAlarm, sub)
-                        }
-                    }
+//                    // Check the size of subs, if there are none, do not schedule notifications
+//                    if (subs.isNotEmpty()) {
+//                        val alarmScheduler =
+//                            AlarmScheduler()
+//
+//                        // Schedule notification reminders for subscriptions
+//                        for (sub in subs) {
+//                            val scheduledAlarm =
+//                                alarmScheduler.createPendingIntent(context, sub) as PendingIntent
+//                            val alarmManager =
+//                                context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//                            alarmScheduler.scheduleAlarm(alarmManager, scheduledAlarm, sub)
+//                        }
+//                    }
                 }
             }
         }

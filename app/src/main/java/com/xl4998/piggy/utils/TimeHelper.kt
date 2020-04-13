@@ -24,4 +24,11 @@ class TimeHelper {
         val currDate = cal.time
         return sdf.format(currDate)
     }
+
+    /**
+     * Creates an unique notification id using the current time
+     */
+    fun getNotificationUniqueID(): Int {
+        return cal.timeInMillis.toInt()
+    }
 }

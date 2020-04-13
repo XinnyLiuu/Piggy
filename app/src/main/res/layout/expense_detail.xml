@@ -22,7 +22,7 @@
                 android:id="@+id/expense_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Expense Name"
+                android:text="@string/expense_name"
                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
             <TextView
@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Expense Category"
+                android:text="@string/expense_category"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary" />
 
@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Expense Cost"
+                android:text="@string/expense_cost"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary" />
 
@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Expense Date"
+                android:text="@string/expense_date"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary" />
 
