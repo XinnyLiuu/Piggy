@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
             NotificationManagerCompat.IMPORTANCE_HIGH,
             false,
             "Subscriptions",
-            "Subscription Reminders"
+            "Subscription Notifications"
         )
     }
 }

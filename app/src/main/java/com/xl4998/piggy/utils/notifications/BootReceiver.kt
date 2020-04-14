@@ -42,23 +42,26 @@ class BootReceiver : BroadcastReceiver() {
                         NotificationManagerCompat.IMPORTANCE_HIGH,
                         false,
                         "Subscriptions",
-                        "Subscription Reminders"
+                        "Subscription Notifications"
                     )
 
-//                    // Check the size of subs, if there are none, do not schedule notifications
-//                    if (subs.isNotEmpty()) {
-//                        val alarmScheduler =
-//                            AlarmScheduler()
-//
-//                        // Schedule notification reminders for subscriptions
-//                        for (sub in subs) {
-//                            val scheduledAlarm =
-//                                alarmScheduler.createPendingIntent(context, sub) as PendingIntent
-//                            val alarmManager =
-//                                context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//                            alarmScheduler.scheduleAlarm(alarmManager, scheduledAlarm, sub)
-//                        }
-//                    }
+                    // Check the size of subs, if there are none, do not schedule notifications
+                    if (subs.isNotEmpty()) {
+                        // Alarm related
+                        val alarmScheduler = AlarmScheduler()
+                        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+                        // Schedule notification for subscriptions
+                        for (sub in subs) {
+                            // Set an alarm to notify about the subscription payment date a week before
+                            var pendingIntent: PendingIntent = alarmScheduler.createSubReminderIntent(context, sub) as PendingIntent
+                            alarmScheduler.scheduleAlarmOneWeekBeforeSubDate(alarmManager, pendingIntent, sub)
+
+                            // Set an alarm to update the subscription payment date on the day of the payment
+                            pendingIntent = alarmScheduler.createSubUpdateIntent(context, sub)
+                            alarmScheduler.scheduleAlarmDayOfSubDate(alarmManager, pendingIntent, sub)
+                        }
+                    }
                 }
             }
         }

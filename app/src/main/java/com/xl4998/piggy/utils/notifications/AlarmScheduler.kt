@@ -54,11 +54,9 @@ class AlarmScheduler {
         val timeHelper = TimeHelper()
 
         // Prepare the time to start notify
-//        val subPaymentDate = timeHelper.sdf.parse(sub.nextPaymentDate) as Date
-        val subPaymentDate = timeHelper.sdf.parse(sub.dateSubscribed) as Date // TODO: For testing - set payment as sub date of the future
+        val subPaymentDate = timeHelper.sdf.parse(sub.nextPaymentDate) as Date
         timeHelper.cal.time = subPaymentDate
-//        timeHelper.cal.add(Calendar.DAY_OF_MONTH, -7) // Set time of start to 7 days before
-        timeHelper.cal.add(Calendar.DAY_OF_MONTH, -1) // TODO: For testing - Set time of start to 1 days before
+        timeHelper.cal.add(Calendar.DAY_OF_MONTH, -7) // Set time of start to 7 days before
 
         // Set alarm
         alarmManager.set(
@@ -80,8 +78,7 @@ class AlarmScheduler {
         val timeHelper = TimeHelper()
 
         // Prepare the time to start notify
-//        val subPaymentDate = timeHelper.sdf.parse(sub.nextPaymentDate) as Date
-        val subPaymentDate = timeHelper.sdf.parse(sub.dateSubscribed) as Date // TODO: For testing - set payment as sub date of the future
+        val subPaymentDate = timeHelper.sdf.parse(sub.nextPaymentDate) as Date
         timeHelper.cal.time = subPaymentDate
 
         // Set alarm

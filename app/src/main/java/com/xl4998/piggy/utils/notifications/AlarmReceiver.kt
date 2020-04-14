@@ -7,9 +7,7 @@ import android.content.Context
 import android.content.Intent
 import com.xl4998.piggy.data.db.PiggyDatabase
 import com.xl4998.piggy.data.db.SubscriptionRepository
-import com.xl4998.piggy.data.db.entities.Expense
 import com.xl4998.piggy.utils.TimeHelper
-import com.xl4998.piggy.utils.constants.ExpenseCategories
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -60,8 +58,14 @@ class AlarmReceiver : BroadcastReceiver() {
                     // Update the subscription which will update the next payment date as well
                     sub = SubscriptionRepository.prepareSub(sub)
 
-                    // TODO: Hardcode fake sub name
-                    sub.name = "UPDATED!!!"
+                    db.subDao().updateByName(
+                        sub.name,
+                        sub.name,
+                        sub.cost,
+                        sub.dateSubscribed,
+                        sub.interval,
+                        sub.nextPaymentDate
+                    )
 
                     // Prepare new intents
                     val alarmScheduler = AlarmScheduler()
@@ -80,6 +84,17 @@ class AlarmReceiver : BroadcastReceiver() {
                     // Set an alarm to update the subscription payment date on the day of the payment
                     pendingIntent = alarmScheduler.createSubUpdateIntent(context.applicationContext, sub)
                     alarmScheduler.scheduleAlarmDayOfSubDate(alarmManager, pendingIntent, sub)
+
+                    // Show notification for subscription
+                    NotificationHelper().showNotification(
+                        context,
+                        "%s Subscription is Due".format(sub.name),
+                        "Remember to pay your subscription ASAP!".format(
+                            sub.name,
+                            sub.nextPaymentDate
+                        ),
+                        TimeHelper().getNotificationUniqueID()
+                    )
                 }
             }
         }
