@@ -28,9 +28,7 @@ class MaterialDatePickerDialog(
             y, m, d
         )
 
+        picker.datePicker.maxDate = timeHelper.cal.timeInMillis
         picker.show()
     }
-
-    //      TODO: Add back above ^  picker.datePicker.maxDate = timeHelper.cal.timeInMillis
-
 }
