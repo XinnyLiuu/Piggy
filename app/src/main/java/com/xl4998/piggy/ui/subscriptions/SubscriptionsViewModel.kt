@@ -3,6 +3,7 @@ package com.xl4998.piggy.ui.subscriptions
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
+import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -48,7 +49,24 @@ class SubscriptionsViewModel(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 // Add the subscription
-                subscriptionRepository.addSubscription(sub)
+                try {
+                    subscriptionRepository.addSubscription(sub)
+                } catch (e: SQLiteConstraintException) {
+                    allSubs = subscriptionRepository.getAllSubs()
+
+                    // Add a "bad" LiveData that our fragment will pick up
+                    val exception: Subscription = Subscription(
+                        "SQLiteConstraintException",
+                        0.00,
+                        "",
+                        0,
+                        ""
+                    )
+                    allSubs.add(exception)
+                    liveAllSubs.postValue(allSubs)
+                    return@withContext
+                }
+
                 allSubs = subscriptionRepository.getAllSubs()
                 liveAllSubs.postValue(allSubs)
 
