@@ -7,8 +7,6 @@ import java.util.*
 
 /**
  * Handles all subscription related data operations
- *
- * TODO: Handle exceptions
  */
 class SubscriptionRepository(
     val application: Application

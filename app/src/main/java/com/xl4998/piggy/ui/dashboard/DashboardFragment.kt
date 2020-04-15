@@ -222,7 +222,7 @@ class DashboardFragment : Fragment() {
      */
     private fun generateCenterSpannableText(): SpannableString? {
         val header = "Expenses"
-        val subHeader = "Powered by Piggy" // TODO: Make this for the current month
+        val subHeader = "Powered by Piggy"
 
         val s = SpannableString("$header\n$subHeader")
         s.setSpan(RelativeSizeSpan(1.2f), 0, header.length, 0)

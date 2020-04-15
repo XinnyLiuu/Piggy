@@ -8,8 +8,6 @@ import java.util.*
 
 /**
  * Handles all expense related data operations
- *
- * TODO: Handle exceptions
  */
 class ExpenseRepository(application: Application) {
 
